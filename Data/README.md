@@ -1,1 +1,1 @@
-# SFUStat360
+# SFUStat360 Data directory
