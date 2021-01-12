@@ -1,7 +1,7 @@
 ---
 title: 'Statistics 360:  Advanced R for Data Science'
 subtitle: 'Lecture 1'
-author: "Brad Mcneney"
+author: "Brad McNeney"
 output: 
   beamer_presentation:
     includes:
