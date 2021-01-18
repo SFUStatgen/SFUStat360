@@ -1,0 +1,55 @@
+---
+title: "Week 2 Exercises"
+author: "Brad McNeney"
+output: 
+  html_document:
+    fig_width: 6
+    fig_height: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Predict the outcome of the following:
+```
+c(1, FALSE)
+c("a",1)
+c(list(1),"a")
+c(TRUE,1)
+```
+
+2. If `vv <- list(a=1,b=2)`, why doesn't `as.vector(vv)`
+work to coerce `vv` into an atomic vector?
+
+3. What do `dim()`, `nrow()` and `ncol()` return when applied to a 1-dimensional vector? What about `NROW()` or `NCOL()`?
+
+4. What is `dim(cbind(A,A))` if `A = matrix(1:4,2,2)`?
+
+5. What do the following return? Understand why. 
+```
+TRUE | FALSE
+c(TRUE,TRUE) & c(FALSE,TRUE)
+c(TRUE,TRUE) && c(FALSE,TRUE)
+```
+
+6. What sort of object does `table()` return? What is its type? What attributes does it have? How does the dimensionality change as you tabulate more variables?
+
+7. What happens to a factor when you modify its levels?
+How do f2 and f3 differ from f1?
+
+```
+f1 <- factor(letters)
+levels(f1) <- rev(levels(f1))
+f2 <- rev(factor(letters))
+f3 <- factor(letters, levels = rev(letters))
+```
+
+8. Fix each of the following common data frame subsetting errors:
+```
+mtcars[mtcars$cyl = 4, ]
+mtcars[-1:4, ]
+mtcars[mtcars$cyl <= 5]
+mtcars[mtcars$cyl == 4 | 6, ]
+```
+
