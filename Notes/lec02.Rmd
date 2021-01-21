@@ -236,7 +236,7 @@ the value of vectors.
 
 ```{r}
 avec
-avec[2] <- 210
+avec[2] <- 220
 avec
 ```
 
@@ -346,6 +346,8 @@ read row-by-row instead use the `byrow=TRUE` argument:
 ```{r}
 A <- matrix(1:4,nrow=2,ncol=2,byrow=TRUE) 
 A
+A <- matrix(c( 1, 2, 
+               3, 4),ncol=2,nrow=2,byrow=TRUE)
 ```
 
 ## Combining matrices

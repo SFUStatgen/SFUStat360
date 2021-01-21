@@ -1,0 +1,241 @@
+---
+title: 'Statistics 360:  Advanced R for Data Science'
+subtitle: 'Lecture 3'
+author: "Brad McNeney"
+output: 
+  beamer_presentation:
+    includes:
+      in_header: header_pagenum.tex
+    toc: true
+---
+
+# Control Flow
+
+## Control Flow
+
+- Reading: text, chapter 5
+- if, while, break, FIX
+
+## `if` and `if`-`else` 
+
+\small
+
+- `if` tests a condition and executes code if the condition is true. Optionaly, can couple with an `else` to specify code to execute
+when condition is false.
+
+```{r}
+if("cat" == "dog") {
+  print("cat is dog")
+} else {
+  print("cat is not dog")
+}
+```
+
+
+## `for` loops
+
+\small
+
+Example:
+
+```{r}
+n <- 10; nreps <- 100; x <- vector(mode="numeric",length=nreps)
+for(i in 1:nreps) {
+  # Code you want to repeat nreps times
+  x[i] <- mean(rnorm(n))
+}
+summary(x)
+print(i)
+```
+
+## `for` loop index set
+
+\small
+
+- Index sets of the form `1:n` are most common, but 
+can be almost any atomic vector.
+
+```{r}
+ind <- c("cat","dog","mouse")
+for(i in ind) {
+  print(paste("There is a",i,"in my house"))
+}
+```
+
+## `while` loops
+
+\small
+
+- Use a `while` loop when you want to continue until
+some logical condition is met.
+
+```{r}
+set.seed(1)
+# Number of coin tosses until first success (geometric distn)
+p <- 0.1; counter <- 0; success <- FALSE
+while(!success)  {
+  success <- as.logical(rbinom(n=1,size=1,prob=p))
+  counter <- counter + 1
+}
+counter
+```
+
+## `break`
+
+- `break` can be used to break out of a `for` or `while` loop.
+
+```{r}
+for(i in 1:100) {
+  if(i>3) break
+  print(i)
+}
+```
+
+# R Functions
+
+## R functions
+
+* Reading: text, chapter 6
+\small
+- In R, functions are objects with three essential components: 
+    - the code inside the function, or `body`,
+    - the list of arguments to the function, or `formals`, and
+    - a data structure called an `environment` which is like a 
+    map to the memory locations of all objects defined
+    in the function.
+    
+- Functions can have other attributes, but the above three are 
+essential.
+
+## Example function 
+\scriptsize
+
+```{r}
+f <- function(x) {
+  return(x^2)
+}
+f
+```
+
+## The function body
+\small
+
+- This is the code we want to execute. 
+- When the end of a function is reached without a call to 
+`return()`, the value of the last line is returned.
+    - So in our example function, we could replace `return(x^2)` 
+    with just `x^2.
+
+## The function formals
+\small
+
+- These are the arguments to the function. 
+- Function arguments can have default values, as in:
+```{r}
+f <- function(x=0) { x^2} 
+```
+- Argument defaults can be defined in terms of other arguments:
+```{r}
+f <- function(x=0,y=3*x) { x^2 + y^2 }
+f()
+f(x=1)
+f(y=1)
+```
+
+## Argument matching when calling a function
+\footnotesize
+
+- When you call a function, the arguments are matched first by 
+name, then by "prefix" matching and finally by position:
+```{r}
+f <- function(firstarg,secondarg) {
+  firstarg^2 + secondarg
+}
+f(firstarg=1,secondarg=2)
+f(s=2,f=1)
+f(2,f=1)
+f(1,2)
+```
+
+## The function environment
+\small
+
+- The environment within a function is like a map to the 
+memory locations of all its variables.
+- The function arguments are "passed by value", meaning that
+a copy is made and stored in the function's environment.
+- Variables created within the function are also store in its
+environment
+```{r}
+f <- function(x) {
+  y <- x^2
+  ee <- environment() # Returns ID of environment w/in f
+  print(ls(ee)) # list objects in ee
+  ee
+}
+f(1) # function call
+```
+
+## Enclosing environments
+\small
+
+- Our function `f` was defined in the global environment,
+`.GlobalEnv`,
+which "encloses" the environment within `f`.
+- If `f` needs a variable and can't find it whithin
+`f`'s environment, it will look for it in the enclosing 
+environment, and then the enclosing environment of `.GlobalEnv`,
+and so on. 
+- The `search()` function lists the heirarchy of 
+environments that enclose `.GlobalEnv`. 
+```{r}
+search()
+```
+- To facilitate this search, each environment includes 
+a pointer to its enclosing environment.
+
+# R packages
+
+## Loading packages
+\small
+
+- Use the `library()` command to load packages.
+- When we load a package
+it is inserted in position 2 of the search list, 
+just after `.GlobalEnv`.
+
+\footnotesize
+
+```{r}
+# install.packages("hapassoc")
+library(hapassoc) 
+search()
+```
+
+## Detaching packages
+
+- Detach a package from the search list with `detach()`
+
+\footnotesize
+
+```{r}
+detach("package:hapassoc")
+search()
+```
+
+## Package namespaces
+\small
+
+- Package authors create a list of objects
+that will be visible to users when the package
+is loaded. This list is called  the package namespace.
+- You can access functions in a package's namespace 
+without loading the package using
+the `::` operator.
+```{r}
+set.seed(321)
+n<-30; x<-(1:n)/n; y<-rnorm(n,mean=x); ff<-lm(y~x)
+car::sigmaHat(ff)
+```
+- Doing so does not add 
+the package to the search list.
