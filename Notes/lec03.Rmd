@@ -64,7 +64,7 @@ if(c("cat"=="dog","cat" == "cat")) print("hello world")
 
 - `ifelse()` can handle logical vectors
 - syntax is condition, what to return if expression true, what
-do do if expression false
+to return if expression false
 
 \scriptsize
 ```{r}

@@ -382,7 +382,7 @@ summary {
   x &lt;- rnorm(100000) # Could put multiple lines of R code here
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.007   0.000   0.007</code></pre>
+##   0.012   0.000   0.013</code></pre>
 <p>Use the first element of the output (<code>user</code> time) as your measure of execution time.</p>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Repeat 2, but this time, instead of stacking the output of <code>simdat()</code>, coerce the output of <code>simdat()</code> to a matrix, and stack the matrices. Use <code>system.time()</code> to time your code and compare the timing from question (2).</p></li>
