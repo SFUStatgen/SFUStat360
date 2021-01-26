@@ -209,6 +209,7 @@ f
 `return()`, the value of the last line is returned.
     - So in our example function, we could replace `return(x^2)` 
     with just `x^2.
+- Use `body()` to see the body of a function.
 
 \scriptsize
 
