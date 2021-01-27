@@ -10,12 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Get a GitHub account
 
-1. If you have not already done so, go to github.com, click "Sign Up" and
-create your GitHub account.
-2. Send your GitHub account name to Pulindu (pulindu_ratnasekera@sfu.ca)
-and Brad (mcneney@sfu.ca) so that they can
-add you as a collaborator on the Stat 360 projects
-repository (https://github.com/SFUStatgen/SFUStat360Projects). Include the words "Stat 360 GitHub user" in the subject of your message.
+1. If you have not already done so, go to github.com, click "Sign Up" and create your GitHub account.
+2. Send the following information in an email to Pulindu (pratnase@sfu.ca) so that he can add you as a collaborator on the Stat 360 projects repository (https://github.com/SFUStatgen/SFUStat360Projects). 
+    - Include the words "Stat 360 GitHub user" in the subject of your message.
+    - Your Full Name (as shown in Canvas)
+    - SFU ID number
+    - GitHub Username
+    - GitHub Email Address (Email address you used to create the GitHub Account)
+
 3. When you are added to the repository,
  create an R project
 from it and make sure you can commit files by adding 
