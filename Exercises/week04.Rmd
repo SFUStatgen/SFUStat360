@@ -61,7 +61,9 @@ this in class.
 # Recursive partitioning function.
 recpart <- function(x,y){
   init <- new_node(new_region(x=x,y=y))
-  return(recpart_recursive(init))
+  tree <- recpart_recursive(init)
+  class(tree) <- c("tree",class(tree))
+  return(tree)
 }
 recpart_recursive <- function(node) {
   R <- node$data
