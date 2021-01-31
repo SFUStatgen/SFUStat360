@@ -262,7 +262,7 @@ f(1,2)
 
 - The environment within a function is like a map to the 
 memory locations of all its variables.
-- Variables created within the function are also store in its
+- Variables created within the function are also stored in its
 environment
 
 \scriptsize
