@@ -368,6 +368,60 @@ summary {
 </div>
 
 
+<div id="short-exercises-based-on-chapters-from-text" class="section level2">
+<h2>Short exercises based on chapters from text</h2>
+<ol style="list-style-type: decimal">
+<li>Explain the output of the following code chunk.</li>
+</ol>
+<pre class="r"><code>f &lt;- function() {
+  fe &lt;- environment(f)
+  ee &lt;- environment()
+  pe &lt;- parent.env(ee)
+  list(fe=fe,ee=ee,pe=pe)
+}
+f()</code></pre>
+<pre><code>## $fe
+## &lt;environment: R_GlobalEnv&gt;
+## 
+## $ee
+## &lt;environment: 0x560ca80c5958&gt;
+## 
+## $pe
+## &lt;environment: R_GlobalEnv&gt;</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Read the help files on the <code>exists()</code> and <code>get()</code> functions. Explain the output of the following code chunk.</li>
+</ol>
+<pre class="r"><code>f &lt;- function(xx) {
+  xx_parent &lt;- if(exists(&quot;xx&quot;,envir=environment(f))) {
+    get(&quot;xx&quot;,environment(f))
+  } else {
+    NULL
+  }
+  list(xx,xx_parent)
+}
+f(2)</code></pre>
+<pre><code>## [[1]]
+## [1] 2
+## 
+## [[2]]
+## NULL</code></pre>
+<pre class="r"><code>xx &lt;- 1
+f(2)</code></pre>
+<pre><code>## [[1]]
+## [1] 2
+## 
+## [[2]]
+## [1] 1</code></pre>
+<pre class="r"><code>rm(xx)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Write a function with argument <code>xx</code> that tests whether <code>xx</code> exists in the parent environment and, if so,
+<ol style="list-style-type: lower-alpha">
+<li>assigns the value of <code>xx</code> in the parent environment to the variable <code>xx_parent</code>, and</li>
+<li>tests whether <code>xx</code> and <code>xx_parent</code> are equal. If the test is FALSE, throw a warning to alert the user to the fact that the two are not equal.</li>
+</ol></li>
+<li>Write an infix version of <code>c()</code> that concatenates two vectors.</li>
+</ol>
+</div>
 <div id="recursive-partitioning" class="section level2">
 <h2>Recursive partitioning</h2>
 <ul>
@@ -470,7 +524,9 @@ new_region(x=x,y=y)</code></pre>
 # Recursive partitioning function.
 recpart &lt;- function(x,y){
   init &lt;- new_node(new_region(x=x,y=y))
-  return(recpart_recursive(init))
+  tree &lt;- recpart_recursive(init)
+  class(tree) &lt;- c(&quot;tree&quot;,class(tree))
+  return(tree)
 }
 recpart_recursive &lt;- function(node) {
   R &lt;- node$data

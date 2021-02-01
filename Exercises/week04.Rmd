@@ -8,6 +8,49 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Short exercises based on chapters from text
+
+1. Explain the output of the following code chunk.
+
+```{r}
+f <- function() {
+  fe <- environment(f)
+  ee <- environment()
+  pe <- parent.env(ee)
+  list(fe=fe,ee=ee,pe=pe)
+}
+f()
+```
+
+2. Read the help files on the `exists()` and
+`get()` functions.
+Explain the output of the following code chunk.
+
+```{r}
+f <- function(xx) {
+  xx_parent <- if(exists("xx",envir=environment(f))) {
+    get("xx",environment(f))
+  } else {
+    NULL
+  }
+  list(xx,xx_parent)
+}
+f(2)
+xx <- 1
+f(2)
+rm(xx)
+```
+
+3. Write a function with argument `xx` that tests 
+whether `xx` exists in the parent environment and, if so,
+    (a) assigns the value of `xx` in the parent environment
+    to the variable `xx_parent`, and
+    (b) tests whether `xx` and `xx_parent` are equal. If 
+    the test is FALSE, throw a warning to alert the user to
+    the fact that the two are not equal.
+
+4. Write an infix version of `c()` that concatenates
+two vectors.
 
 ## Recursive partitioning
 
