@@ -158,12 +158,18 @@ ff_invis(1) # but x <- ff_invis(1) same as x <- ff(1)
 * Functions can signal error, warning or message
 conditions with `stop()`, `warning()` and `message()`,
 respectively.
-* These signals can be "handled" by ignoring them, 
-as we have been doing with `try()`,
-or implementing a custom handler.
-* See Chapter 8 of the text for more on 
-handling conditions. 
-* Here we just cover signalling.
+    * `stop()` stops execution, `warning()`
+    and `message()` don't
+* These signals can be "handled" by ignoring them
+    * ignore errors with `try()`
+    * ignore warnings with `suppressWarnings()`
+    * ignore messages with `suppressMessages()`
+* or implementing a custom handler that over-rides
+the default behaviour of a condition
+    * see Chapter 8 of the text for more on 
+    handling conditions 
+* We restrict attention to (i) signalling and (ii) 
+cleaning up any changes to the R session before exiting.
 
 
 
@@ -217,7 +223,7 @@ centre(1:10,"mymean")
 ```
 
 
-## Exit handlers
+## Cleaning up with exit handlers
 
 * An R session has a "global state" of options and
 parameters that control default behaviour.
