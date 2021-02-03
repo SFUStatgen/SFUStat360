@@ -384,7 +384,7 @@ f()</code></pre>
 ## &lt;environment: R_GlobalEnv&gt;
 ## 
 ## $ee
-## &lt;environment: 0x560ca80c5958&gt;
+## &lt;environment: 0x564c54479958&gt;
 ## 
 ## $pe
 ## &lt;environment: R_GlobalEnv&gt;</code></pre>
@@ -445,7 +445,7 @@ new_node &lt;- function(data,childl=NULL,childr=NULL){
 # covariate space. Constructor for region data structure:
 new_region &lt;- function(coords=NULL,x,y){
   if(is.null(coords)) {
-    coords &lt;- Reduce(cbind,lapply(x,range))
+    coords &lt;- sapply(x,range)
   }
   out &lt;- list(coords=coords,x=x,y=y)
   class(out) &lt;- &quot;region&quot;
@@ -459,7 +459,7 @@ x &lt;- data.frame(x1=rnorm(n),x2=rnorm(n))
 y &lt;- rnorm(n)
 new_region(x=x,y=y)</code></pre>
 <pre><code>## $coords
-##           init          
+##             x1        x2
 ## [1,] -1.265061 -1.966617
 ## [2,]  1.715065  1.786913
 ## 
@@ -485,7 +485,7 @@ new_region(x=x,y=y)</code></pre>
 <pre class="r"><code>new_node(new_region(x=x,y=y))</code></pre>
 <pre><code>## $data
 ## $coords
-##           init          
+##             x1        x2
 ## [1,] -1.265061 -1.966617
 ## [2,]  1.715065  1.786913
 ## 
