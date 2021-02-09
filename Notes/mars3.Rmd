@@ -71,7 +71,7 @@ across folds.
 
 ## Generalized cross-validation (GCV)
 
-* The LOF measure $LOF(\hat{f}(M)) = GCV(M)$ in Freidman's equations (30) 
+* The LOF measure $LOF(\hat{f}(M)) = GCV(M)$ in Friedman's equations (30) 
 and (32) is
 $$
 \frac{1}{N} \frac{\sum_{i=1}^N (y_i - \hat{f}_M(x_i))^2}{(1-\tilde{C}(M)/N)^2}
