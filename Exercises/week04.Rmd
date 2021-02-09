@@ -78,7 +78,7 @@ new_node <- function(data,childl=NULL,childr=NULL){
 # covariate space. Constructor for region data structure:
 new_region <- function(coords=NULL,x,y){
   if(is.null(coords)) {
-    coords <- Reduce(cbind,lapply(x,range))
+    coords <- sapply(x,range)
   }
   out <- list(coords=coords,x=x,y=y)
   class(out) <- "region"
