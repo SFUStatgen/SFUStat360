@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE,warning=FALSE,message=FALSE)
 ## Recap of forward algorithm
 
 * The MARS forward stepwise algorithm (Algorithm 2) builds a linear
-prediction equation that is linear in basis functions $B_1(x),\ldots,B_{M_{max}}$.
+prediction equation that is linear in basis functions $B_1(x),\ldots,B_{M_{max}}(x)$.
     * Coefficients of the basis functions are by least squares.
     * Include an intercept term $B_0(x)=1$ (notation change from Alg 2)
     * Basis functions are products of hinge functions:
@@ -116,3 +116,30 @@ from the forward algorithm
     that reduces GCV(M) the most (like `drop()`).
     * If GCV(M) best seen in outer loop, update $J^*$ 
 * Algorithm terminates with best model $J^*$.
+
+## Software features
+
+* Arguments/inputs
+    * Formula interface to specify response and explanatory variables.
+    * data argument for input data
+    * list data structure of parameters that control algorithm,
+    such as $M_{max}$ and parameter $d$ in GCV.
+* Value/output
+    * output of `lm()` from final fit
+    * specification of basis functions from final fit that can be used
+    for prediction
+    * other ...
+    
+## Data structures and functions
+
+* Input data structures
+    * data in a data frame
+    * list of parameters (see `glm.control`)
+* Output data strctures
+    * object of class `MARS`
+* Functions
+    * `MARS.control()` to set up input parameters, with default settings
+    * `MARS()`, the main MARS function that fits the model
+    * `predict()`, `residuals()`, `fitted()`, ... for 
+    objects of class `MARS`
+    * `plot()` for objects of class `MARS` -- what would this do?
