@@ -40,8 +40,8 @@ recpart_fwd <- function(y,x,Mmax){
   #---------------------------------------------------
   # Looping for forward selection:
   for(M in 1:Mmax) { # contrast to indexing 2...Mmax in Friedman
+    lof_best <- Inf
     for(m in 1:M) { # choose a basis function to split
-      lof_best <- Inf
       for(v in 1:n){ # select a variable to split on
         tt <- split_points(x[,v],B[,m]) # Exercise: write split_points() 
         for(t in tt) { 
@@ -51,7 +51,7 @@ recpart_fwd <- function(y,x,Mmax){
           lof <- LOF(y~.,gdat) #  Use your LOF() from week 4
           if(lof < lof_best) { 
             lof_best <- lof
-            splits[M,] <- c(m,v,t) # will
+            splits[M,] <- c(m,v,t) 
           } # end if
         } # end loop over splits
       } # end loop over variables
@@ -61,9 +61,6 @@ recpart_fwd <- function(y,x,Mmax){
     B[,m] <- B[,m]*(x[,v]>t)
   } # end loop over M
   return(list(B=B,splits=splits))
-}
-H <- function(x) { 
-  return(as.numeric(x>=0)) 
 }
 LOF <- function(form,data) {
   ff <- lm(form,data)
@@ -87,7 +84,7 @@ variable $x_v$, and basis function $B_m$ as input. The eligible split
 points are $x_v$ values such that basis function $B_m(x)>0$.
 Return ordered unique values, and remember to exclude the 
 largest possible value.
-4. Test that `recpart_fwd(y,x,Mmax=2)`, with your functions from 
+4. Test `recpart_fwd(y,x,Mmax=2)`, with your functions from 
 the exercises, runs on the following test data. 
 These are the same as in the week 4 exercises.
 See if you can find these first two splits on the drawing from week 4: 
