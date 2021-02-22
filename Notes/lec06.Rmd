@@ -216,6 +216,12 @@ sample.interval=20000
 
 ## Visualize profile
 
+* `profvis()` gives a nicer summary of the profiling.
+* Two panels: 
+    * top shows the source code with graphs depicting memory use
+    and execution time
+    * bottom is a "flame graph" showing the call stack, read bottom to top
+
 \small
 
 ```{r}
@@ -226,9 +232,73 @@ source("lec6profiling.R") # profiler will refer to this source file
 
 ## Memory profiling
 
+* The `profvis()` output also includes information about memory usage.
+* Illustrate with an example from the week 2 exercises where 
+we built a dataset of $500 \times 1000$ observations.
+    * included in source file `lec6profiling.R`
+
+\small
+
+```{r}
+# profvis({ bigd1() })
+# profvis({ bigd2() })
+# profvis({ bigd3() })
+```
+
+## Notes on memory profiling
+
+* The grey bars in the bar and flame graphs show memory being freed
+by the garbage collector (notice the `<GC>` when you hover over 
+the grey bars in the flamegraph).
+* Memory claiming and freeing in bigd1 $>$ bigd2 $>$ bigd3.
+
 
 ## Microbenchmarking
 
+* We have done benchmarking on bigd1/2/3 with `system.time()`.
+* For small chunks of code that take less time, `system.time()` is 
+less useful.
+* Microbenchmarking measures performance of code chunks that run in 
+very small time increments.
+* To do this, the `bench` package uses a high precision timer.
+
+## `bench`
+
+* Times the expression in multiple runs.
+    * At least one run and at most the number of runs it can do in 1/2 sec.
+* Output displayed as a summary table or graph.
+
+\footnotesize
+
+```{r}
+library(bench)
+x <- runif(100)
+lb <- mark(
+  sqrt(x),
+  x ^ 0.5
+)
+lb
+```
+
+##
+
+\small
+
+```{r}
+plot(lb,type="violin")
+```
+
+## Interpretation
+
+* Notice the units in the output table, microseconds for `sqrt` and
+nanoseconds for `x^{0.5}`
+* Summary statistics reported are min, mean, median, max, and itr/sec.
+* gc/sec is number of garbage collections per second.
+* There are other columns in the output not shown -- see `?mark` for
+details.
+* The bumps in the violin plot may indicate that your computer was
+doing something else during some of the runs
+* Notice the highly skewed distribution -- median is more useful than mean
 
 
 ## Final thoughts
