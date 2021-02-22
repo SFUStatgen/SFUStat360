@@ -31,10 +31,11 @@ Does the modified code throw an error?
 5. Un-do your modification from question 4. Insert a `browser()`
 at line 12 of `recpart_fwd()` (just inside the for loop over v)
 and run the function.
-    i. When `browser()` stops the function, print out the value of v. 
+    i. When `browser()` stops the function, print out the value of v and n. 
     ii. Step through the function with `n` a few times and then type `c` to 
-    continue to the next call to `browser()`. Print v again. 
-    iii. Repeat a few times until the function stops. What was
+    continue execution to the next call to `browser()`. Print v again. 
+    iii. Use `f` to finish execution of the v-loop. Print v again. 
+    Repeat a few times until the function stops. What was
     the value of v just before the crash? 
     
 6. Remove your `browser()` and type `debug(recpart_fwd)`. Now run
@@ -59,6 +60,7 @@ recpart_fwd <- function(y,x,Mmax){
     lof_best <- Inf
     for(m in 1:M) { # choose a basis function to split
       for(v in 1:n){ # select a variable to split on
+        browser()
         tt <- split_points(x[,v],B[,m]) # Exercise: write split_points() 
         for(t in tt) { 
           Bnew <- data.frame(B[,(1:M)[-m]],
