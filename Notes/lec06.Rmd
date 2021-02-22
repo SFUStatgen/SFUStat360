@@ -146,8 +146,96 @@ f(3) # should return 6
 
 # Measuring performance
 
+## Measuring performance
+
+* When you write code you develop an intuition about what 
+parts will run slowly -- don't trust this!
+* As statisticians we know that the only thing you can trust is data.
+* Profiling and benchmarking are ways to collect data on your code
+
+\small
+
+```{r}
+library(profvis) #visualize profiling data
+library(bench) # benchmarking tools
+```
+
 ## Profiling
+
+* R uses a statistical profiler that records the call stack at small 
+intervals.
+    * Read the call stack from right to left
+
+\small
+
+```{r}
+f <- function() {pause(0.1);g();h()} # pause() is from profvis
+g <- function() {pause(0.1);h()}
+h <- function() {pause(0.1)}
+Rprof()
+f()
+Rprof(NULL) # Now view Rprof.out
+```
+
+##
+
+\tiny
+
+```
+sample.interval=20000
+"pause" "f" 
+"pause" "f" 
+"pause" "f" 
+"pause" "f" 
+"pause" "f" 
+"pause" "g" "f" 
+"pause" "g" "f" 
+"pause" "g" "f" 
+"pause" "g" "f" 
+"pause" "g" "f" 
+"pause" "h" "g" "f" 
+"pause" "h" "g" "f" 
+"pause" "h" "g" "f" 
+"pause" "h" "g" "f" 
+"pause" "h" "g" "f" 
+"pause" "h" "f" 
+"pause" "h" "f" 
+"pause" "h" "f" 
+"pause" "h" "f" 
+"pause" "h" "f" 
+```
+
+
+## Summary of profile
+
+\tiny
+
+```{r}
+# summaryRprof() # uncomment and run
+```
+
+## Visualize profile
+
+\small
+
+```{r}
+source("lec6profiling.R") # profiler will refer to this source file
+# profvis({ f() }) # Or choose Profile from RStudio
+```
+
+
+## Memory profiling
+
 
 ## Microbenchmarking
 
+
+
 ## Final thoughts
+
+* Avoid the temptation to let performance considerations 
+dominate your code development and lead you 
+to profile and benchmark extensively.
+* Remember that the most important performance improvement
+is code that gives the right answer.
+
