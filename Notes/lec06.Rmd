@@ -292,8 +292,8 @@ plot(lb,type="violin")
 
 * Notice the units in the output table, microseconds for `sqrt` and
 nanoseconds for `x^{0.5}`
-* Summary statistics reported are min, mean, median, max, and itr/sec.
-* gc/sec is number of garbage collections per second.
+* Run-time summary statistics include min, mean, median, max, and itr/sec.
+* `mem_alloc` and `gc/sec` related to memory usage
 * There are other columns in the output not shown -- see `?mark` for
 details.
 * The bumps in the violin plot may indicate that your computer was
