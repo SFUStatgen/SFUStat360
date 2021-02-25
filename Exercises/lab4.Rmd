@@ -32,7 +32,7 @@ by the three inner for loops of your function, record them
 in a modified version of `splits` that is a list,  whose elements
 record the  $(s,v,t)$ triplets that make up each basis function. 
 Suppose that
-$B_m(x) = \prod_{k=1}^{K_m} H[s_{km}(x_{v(k,m} - t_{km})]$, where
+$B_m(x) = \prod_{k=1}^{K_m} H[s_{km}(x_{v(k,m)} - t_{km})]$, where
 $s_{km} = \pm1$, $v_{k,m}$ is the index of the splitting variable
 and $t_{km}$ is the split point. Then `splits[[m]]` is the 
 data frame with elements
