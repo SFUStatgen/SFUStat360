@@ -156,7 +156,7 @@ library(sloop)
 ```{r}
 f <- factor(c("cat","dog","mouse"))
 typeof(f)
-attributes(f)
+attributes(f) # see also class(f) and inherits(f,"factor")
 otype(f) # from sloop
 s3_class(f) # from sloop
 ```
@@ -173,9 +173,22 @@ new_node <- function(data,childl=NULL,childr=NULL){
   structure(list(data=data,childl=childl,childr=childr),
                   class="node")
 }
-nn <- new_node(data=matrix(1:4,2,2))
+nn <- new_node(data=NULL) # Note: data should be a region object
 s3_class(nn)
 ```
+
+## Removing the class attribute
+
+* We can simply remove the class with `attributes(f)$class <- NULL`
+but it is better to use `unclass()`.
+
+\small
+
+```{r}
+print(unclass(f))
+otype(unclass(f))
+```
+
 
 ## Class conventions
 
@@ -188,9 +201,11 @@ the separator between generic and class names in naming methods.
 `new_myclass()` to create an object with the correct 
 structure.
 * Validator: Make a function named `validate_myclass()` that
-checks that the object's data makes sense.
+checks that the object's data makes sense, stops if not,
+and otherwise returns the object.
 * Helper: Make a function named `myclass()` that users
-can use to create instances of the class.
+can use to create instances of the class. Should call
+the validator, if one exists.
 
 * Exercise (see week 7 exercises): 
 Create validator and helper functions for the
@@ -238,6 +253,7 @@ interface (arguments) and finds an appropriate method
 ```{r}
 print
 ftype(print)
+ftype(print.factor)
 ```
 
 
