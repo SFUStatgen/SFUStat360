@@ -1,0 +1,42 @@
+---
+title: "Week 7 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Using OOP terminology, what is the difference 
+between `t.test()` and `t.data.frame()`. When is each function called?
+
+
+2. Describe the difference in behaviour in the following two calls to 
+`mean()`. 
+
+```{r}
+set.seed(1014)
+some_days <- as.Date("2017-01-31") + sample(10, 5)
+
+mean(some_days)
+#> [1] "2017-02-06"
+mean(unclass(some_days))
+#> [1] 17203
+```
+
+3. Refer to the lecture 7 notes. Write a validator
+and helper for the node class discussed on page 14.
+Have the validator check that the node's data is a
+region object. The helper should take the x and y data
+as input and should call the validator.
+
+
+4. Write a generic function `plot_regions` that plots regions
+from the recursive partitioning algorithm in lab 2. Write methods
+for this generic for objects of class tree and of class node.
+
+ 
+5. What generics does the table class have methods for?
+What generics does the ecdf class have methods for?
+
