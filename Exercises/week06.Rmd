@@ -14,18 +14,15 @@ hits and see if any are informative.
 
 2. What function was called when the error was triggered?
 
-*Solution* the subsetting function for data frames,  `[.data.frame`
 
 3. Run traceback to see the call stack. What is the last function
 that you wrote to be called? Which line of `recpart_fwd()` called 
 this function?
 
-*Solution*  `split_points()`, called at line 12.
 
 4. Modify the code by removing the for-loop over M and setting M to 1.
 Does the modified code throw an error?
 
-*No*
 
 5. Un-do your modification from question 4. Insert a `browser()`
 at line 12 of `recpart_fwd()` (just inside the for loop over v)
