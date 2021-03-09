@@ -374,7 +374,7 @@ summary {
 <li><p>Create a subclass of <code>BankAccount</code> that allows overdraft, but charges a $10 fee.</p></li>
 <li><p>Implement the bank account as an S4 class called <code>BankAccount4</code>.</p>
 <ol style="list-style-type: lower-roman">
-<li>Include a prototype that sets the balance to <code>NA_real_</code> (a missing value of type double).</li>
+<li>In your class definition include a prototype that sets the balance to <code>NA_real_</code> (a missing value of type double).</li>
 <li>Write a helper that creates objects of class <code>BanKAccount4</code> and allows the user to set the initial balance, with default zero. Have the helper function coerce the balance to a double before creating the object.</li>
 <li>Write a <code>show</code>()` method that prints the object nicely.</li>
 <li>Define generics and methods for making deposits and withdrawls; because these methods modify the balance they should include calls to <code>validObject()</code>.</li>

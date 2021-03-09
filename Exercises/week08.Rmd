@@ -23,7 +23,7 @@ charges a $10 fee.
 
 
 4. Implement the bank account as an S4 class called `BankAccount4`.
-    (i) Include a prototype that sets the balance to `NA_real_` (a missing
+    (i) In your class definition include a prototype that sets the balance to `NA_real_` (a missing
     value of type double).
     (ii) Write a helper that creates objects of class `BanKAccount4` and 
     allows the user to set the initial balance, with default zero.
