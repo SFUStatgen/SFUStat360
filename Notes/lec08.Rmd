@@ -381,8 +381,10 @@ setValidity("Person", function(object) {
 
 * Example: Write accessor functions for users to get and set data in 
 your class.
-    * They shouldn't use `@`, and you shouldn't on other developers' classes
+    * Users shouldn't use `@`, and you shouldn't on other developers' classes
     * Write generics with `setGeneric()` and methods with `setMethod()`.
+    * Setting values has the potential to create invalid objects. 
+    Can call `validObject()` to ensure a valid object.
 
 \tiny
 
@@ -396,10 +398,12 @@ setMethod("age", "Person", function(x) x@age)
 setGeneric("age<-", function(x, value) standardGeneric("age<-"))
 setMethod("age<-", "Person", function(x, value) {
   x@age <- value
+  validObject(x) # check object validity
   x
 })
 age(brad) <- 55
 age(brad)
+try({ age(brad) <- 55:56 })
 ```
 
 ## Signature
