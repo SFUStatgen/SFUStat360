@@ -30,7 +30,7 @@ charges a $10 fee.
     Have the helper function coerce the balance to a double before
     creating the object.
     (iii) Write a `show`()` method that prints the object nicely.
-    (iv) Define generics and write deposit and withdrawl methods; 
+    (iv) Define generics and methods for making deposits and withdrawls; 
     because these methods modify the balance they should 
     include calls to `validObject()`.
     (v) Use `methods()` to find all methods for objects of class 
