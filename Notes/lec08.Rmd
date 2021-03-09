@@ -466,3 +466,8 @@ methods("age")
 methods(class="Employee")
 methods(class="Person")
 ```
+
+## Topics skimmed or not covered.
+
+* Method dispatch, section 15.5
+* Interfacing S4 and S3, section 15.6.
