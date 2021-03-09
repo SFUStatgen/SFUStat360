@@ -1,0 +1,68 @@
+---
+title: "Lab 5, week 7"
+author: "Pulindu Ratnasekera"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this lab you will write a first draft of the `fwd_stepwise()`
+function as a modification of your `recpart_fwd()` algorithm
+from lab 4.
+As noted in the week 5 exercises, the key modifications are
+
+* Replace the indicator functions H() with mirror-image hinge functions.
+* Do not remove parent basis function $B_m(x)$ after it
+is split. We are therefore adding two basis functions in 
+each outer-loop iteration.
+* Only split basis function $B_m(x)$ into $B_m(x)h(t-x_v)$
+and $B_m(x)h(x_v-t)$ for variables $x_v$ not already involved in $B_m$.
+
+Save your `fwd_stepwise()` function and any supporting functions in
+the source file `mars.R` in your group's Project folder on GitHub.
+Create another file `mars_testing.R` that contains the following code:
+
+```
+source("mars.R")
+set.seed(123); n <- 10
+x <- data.frame(x1=rnorm(n),x2=rnorm(n))
+y <- rnorm(n)
+rp <- fwd_stepwise(y,x,Mmax=2)
+```
+
+Commit all of your changes to GitHub.
+
+The numbered points below offer some suggestions on how you might
+implement the three modifications.
+
+1. Rather than initialize B to have Mmax+1 columns 
+and `splits` to have Mmax rows,
+initialize `B` to a one-column matrix of ones and `splits` to
+a list with a single element:
+`splits <- list(data.frame(m=0,v=0,s=NA,t=NA))`.
+As the algorithm adds basis functions, use `cbind()` to grow `B`
+and `c()` to grow `splits`. (Note: if you have a list ll and want
+to add a new list item that contains data frame dd, use c(ll,list(dd)).)
+2. Replace the for loop over values of M from 1 to Mmax
+with a while loop that loops until M$>$Mmax (this is a bit trickier than
+it sounds). To what value should
+you initialize M? By how much do you
+increment M at the end of each iteration of the while loop (see 4 below)?
+3. Only split basis function $B_m(x)$ into $B_m(x)h(+(x_v-t))$
+and $B_m(x)h(-(x_v-t))$ for variables $x_v$ not already involved in $B_m$.
+You will need to consult the $m$th element of your `split` list to see which 
+basis functions make up $B_m$.
+4. Do not remove parent basis function $B_m(x)$ after it
+is split. We are therefore adding **two** basis functions in 
+each outer-loop iteration.
+5. Replace the indicator functions $H(+(x_v - t))$ and $H(-(x_v-t))$ with hinge functions. 
+6. While looping over basis functions, variables and split points,
+keep track of `lof_best` **and** 
+the best m, v and t as well. When you finish the three loops, 
+construct left- and right-split data frames from splits[[m]]
+and add these to the splits list.
+7. Have `fwd_stepwise()` return the final set of basis functions 
+for the data and the `split` matrix that can be used to 
+reconstruct the basis functions for any input `x`.
