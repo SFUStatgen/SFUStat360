@@ -1,0 +1,68 @@
+---
+title: "Lab 6, week 8"
+author: "Pulindu Ratnasekera"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+In the recursive partitioning algorithm we had
+the following constructor for S3 region
+objects. A helper function has been added,
+following the convention that the helper has the
+same name as the class. Also included in the code chunk is
+a split method for region objects.
+
+```{r}
+new_region <- function(coords=NULL,x,y){
+  if(is.null(coords)) {
+    coords <- sapply(x,range)
+  }
+  structure(list(coords=coords,x=x,y=y),class="region")
+}
+region <- function(coords=NULL,x,y) {
+  new_region(coords=NULL,x=x,y=y)
+}
+split.region <- function(R,xvar,spt){
+  r1_ind <- (R$x[,xvar] <= spt)
+  c1 <- c2 <- R$coords
+  c1[2,xvar] <- spt; c2[1,xvar] <- spt 
+  Rl <- region(c1,R$x[r1_ind,,drop=FALSE],R$y[r1_ind])
+  Rr <- region(c2,R$x[!r1_ind,,drop=FALSE],R$y[!r1_ind])
+  return(list(Rl=Rl,Rr=Rr))
+}
+#-
+```
+
+
+Implement region objects using R6 and S4:
+
+1.  Create a `Region` R6 class.
+    (i) Include an initializer that initializes the coords field to the 
+    range of the x's if the input coords is NULL.
+    (ii) Include a split method for region objects based on the 
+    `split.region()` function in the above code chunk.
+    (iii) Test your implementation on the x and y data shown below.
+    
+```{r}
+set.seed(123); n <- 10
+x <- data.frame(x1=rnorm(n),x2=rnorm(n))
+y <- rnorm(n)
+```
+
+
+2. Create a `Region` S4 class with a matrix slot for coords,
+a data.frame slot for x and a numeric slot for y.
+    (i) Include a prototype that sets the coords to `matrix(NA,0,0)`,
+    x  to NULL and y to NA_real_.
+    (ii) Write a helper that creates objects of class `Region` and
+    initializes the coords to the range of the x's is input is NULL.
+    (iii) Define a generic split method and write a split method for `Region`
+    objects. Note: your S4 generic split will over-write the S3 generic for 
+    split. 
+    (iv) Test your implementation on the data in the code chunk below 
+    part 1.
+    
