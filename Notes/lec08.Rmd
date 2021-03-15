@@ -373,8 +373,8 @@ setValidity("Person", function(object) {
 \small
 
 ```{r}
-#new("Person",name="Brad",age=54:55)
-#new("Employee",name=c("Brad","McNeney"))
+# new("Person",name="Brad",age=54:55)
+# new("Employee",name=c("Brad","McNeney"))
 ```
 
 ##  Generics and methods
