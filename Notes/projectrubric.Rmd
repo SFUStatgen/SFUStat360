@@ -1,0 +1,104 @@
+---
+title: "Stat 360 Project Rubric"
+author: "Brad McNeney"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Project overview
+
+The project is to consist of R code in your
+group's project folder on GitHub and 
+documentation submitted as a PDF file 
+to a Crowdmark assessment. The code and documentation
+are due at midnight on Sunday April 18.
+The current version of the criteria and grading scheme
+for the code and documentation are as follows.
+(I may need to tweak the criteria as we get further
+along in the project.)
+
+### Code on GitHub (40 marks)
+
+1. (2 marks) A README.md file should include your 
+group members' names and a list of the files in your 
+project folder, with a short description of the
+contents of each file.
+
+2. (13 marks) The main `mars.R` file should
+include the `mars()` function and any others,
+such as `fwd_stepwise()`, that are called by `mars()`.
+Arrange your functions in a "top-down" manner,
+with higher-level functions appearing first,
+followed by successive levels of lower-level functions.
+You are graded on the following criteria:
+    * Data structures (2). The input and output data
+    structures should be those we agreed upon as a class.
+    Further details about these data structures will 
+    be provided as soon as possible.
+    * Correctness (5). There should be no errors in the code and
+    it should correctly implement MARS (see *Test suite* below).
+    * Readability (4): The steps and logic of your implementation
+    should be clearly layed out. It should be easy 
+    for someone else in the class to read your code 
+    and understand what is going on.
+    * Efficiency (2): Take steps to avoid computational
+    inefficiencies, such as excessive copying of 
+    large R objects.
+
+3. (15 marks) User interface (methods).
+Include one file for each method you implement for
+MARS objects. 
+The criteria for the user interface are:
+    * Correct (4 marks). All methods work correctly.
+    * Comprehensive (4 marks). You should implement 
+    all the methods we discuss in class. For now, 
+    plan on implementing `residuals()`, `fitted()`, `predict()`
+    and `plot()`. Others will be discussed as we go.
+    * Familiar (4 marks). The user interface should
+    look familiar to someone who has used `lm()` and `glm()`.
+    * Use your creativity (3 marks). This is the part of the
+    project where you can combine your skills as an R 
+    programmer and data analyst. What features would help
+    users gain insight into their data and the fitted
+    model? Think of something we have not discussed
+    as a class and implement it.
+
+
+4. (10 marks) Test suite. A file `test.R` that
+includes at least three worked examples with 
+non-trivial data. The examples should show a user
+how to call `mars()` and illustrate the methods that
+you have written for MARS objects (see *User interface* above). Computations
+for each example should take no more than one minute.
+I will provide one example dataset that the project marker
+will use to verify that your code works correctly.
+You should provide at least two other examples.
+The criteria for the test suite are:
+    * Correct (4 marks). All examples run without errors.
+    * Comprehensive (4 marks). Taken together, the examples
+    should illustrate **all** of your functions/methods.
+    * Interesting (2 marks). Use the most interesting
+    data you can find. Trivial examples will get no marks.
+
+### Documentation (20 marks)
+
+The documentation is for your `mars()` function and should include the following sections. The sections are those of a typical R documentation file. See the help file for the `lm()` function
+for an example and [Section 2.1.1 of the Writing R Extensions Manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Documenting-functions) for further details. (The manual is
+really too much detail for your project, but I provide 
+the link in case you are interested.)
+I highly recommend that you write the documentation in an 
+R markdown document, but ultimately the choice of word 
+processor is up to you.
+
+1. (2 marks) Description (brief) -- a one- or two-line description of what the function does 
+2. (1 mark) Usage -- how to call the function
+3. (2 marks) Arguments -- a list of arguments and their meaning
+4. (5 marks) Details -- a precise and detailed description of what the function does
+5. (3 marks) Value -- a description of the function's return value
+6. (1 mark) Author(s) -- your name(s)
+7. (1 mark) References -- a reference to the Friedman paper and any other sources you think are necessary
+8. (2 marks) See Also -- a brief description of the methods written for MARS objects
+9. (3 marks) Examples -- Three complete examples of how to use your function and the methods written for its output. You can use examples from your test suite (see *Test suite* above).
