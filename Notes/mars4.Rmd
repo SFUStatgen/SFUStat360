@@ -174,11 +174,13 @@ one who will call the constructor.
 for the S3 class `lm`.
 * Write more informative `print` and `summary` methods
 for `mars` objects
-* Write a `plot` method. The details are up to you.
-Two sources of inspiration are the `plot.earth` method
-for `earth` objects (see earth package), and `plot.Gam` for
-plotting generalized additive model components 
-(see the gam package).
+* Write a `plot` method. 
+    * The details are up to you, but you 
+    should consult Section 3.5 of the Friedman paper (ANOVA decomposition).
+    * Two sources of inspiration are the `plot.earth` method
+    for `earth` objects (see the earth package), and `plot.Gam` for
+    plotting generalized additive model components 
+    (see the gam package).
 * Write a `predict` method with the same
 interface as `predict.lm`.
 * `residuals()`, `fitted()`, `hatvalues()` and others
