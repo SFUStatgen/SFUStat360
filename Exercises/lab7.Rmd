@@ -1,0 +1,30 @@
+---
+title: "Lab 7, week 9"
+author: "Pulindu Ratnasekera"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Implement the backward selection algorithm of MARS in a function named `bwd_stepwise()` that takes the output of your `fwd_stepwise()` as input.
+
+* Modify your `bwd_stepwise()` function to return the response vector `y` along with the basis function matrix `B` and split information
+from last week.
+* You will need to modify your `LOF()` function to use the GCV criterion described in the `mars3.pdf` notes. In addition to the
+formula and data, `LOF()` should take an argument `d` set to 3 by default.
+    * Note: GCV depends on the number of basis functions, M. You can deduce this from the model fitted in `LOF`.
+* If you haven't already, read about the R function `setdiff()`.
+
+```
+# Testing
+set.seed(123); n <- 10
+x <- data.frame(x1=rnorm(n),x2=rnorm(n))
+y <- rnorm(n)
+fwd <- fwd_stepwise(y,x,Mmax=2)
+bwd <- bwd_stepwise(fwd)
+bwd
+```
+
