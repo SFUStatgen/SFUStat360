@@ -1,0 +1,66 @@
+---
+title: "Week 10 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Which base R function does each of the following C++ functions 
+correspond to?
+
+```
+double f1(NumericVector x) {
+  int n = x.size();
+  double y = 0;
+
+  for(int i = 0; i < n; ++i) {
+    y += x[i] / n;
+  }
+  return y;
+}
+
+NumericVector f2(NumericVector x) {
+  int n = x.size();
+  NumericVector out(n);
+
+  out[0] = x[0];
+  for(int i = 1; i < n; ++i) {
+    out[i] = out[i - 1] + x[i];
+  }
+  return out;
+}
+
+bool f3(LogicalVector x) {
+  int n = x.size();
+
+  for(int i = 0; i < n; ++i) {
+    if (x[i]) return true;
+  }
+  return false;
+}
+
+NumericVector f5(NumericVector x, NumericVector y) {
+  int n = std::max(x.size(), y.size());
+  NumericVector x1 = rep_len(x, n);
+  NumericVector y1 = rep_len(y, n);
+
+  NumericVector out(n);
+
+  for (int i = 0; i < n; ++i) {
+    out[i] = std::min(x1[i], y1[i]);
+  }
+
+  return out;
+}
+```
+
+2. Implement the following in C++:
+    a) the base R function `all()`,
+    b) the base R function `range()` and
+    c) the function `over10 <- function(x) { sum(x>10) }`. 
+For (c), have your function return an integer.
+
+
