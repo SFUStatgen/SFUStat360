@@ -17,8 +17,5 @@ RObject callWithOne(Function f) {
 
 // [[Rcpp::export]]
 RObject lm_in_C(RObject form, List dat,Function lm) {
-  // Extract list elements with as() 
-  // Note: as() is a function "template" that works with generic types.
-  //       Google "C++ function templates" for more info if interested
   return(lm(form,dat));
 }
