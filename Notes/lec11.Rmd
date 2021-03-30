@@ -14,7 +14,6 @@ output:
 * The reticulate website: https://rstudio.github.io/reticulate/
 * Python setup: https://docs.python.org/3/using/index.html
 * Python tutorial: https://docs.python.org/3/tutorial/
-* TensorFlow website: https://www.tensorflow.org/overview
 
 ## Calling Python from R 
 
@@ -27,7 +26,7 @@ output:
 
 * Not recommended:
     * Using R/RStudio as a development environment for Python.
-    * Better to go all-in with Python and use Jupyter Notebook
+    * Better to go all-in with Python and use Jupyter Notebooks
     as your IDE.
 
 ## Prerequisites
@@ -58,7 +57,7 @@ library(reticulate)
 your work with Python. 
     * A complete Python installation, including its own Python 
     executable and packages.
-    * Create from the command line with `conda create <env_name>`
+    * Create from the command line with `conda create --name <env_name>`
     * Then "activate" with `conda activate <env_name>` and 
     "de-activate" with `conda deactivate`.
 
@@ -67,21 +66,25 @@ your work with Python.
 * See
 https://rstudio.github.io/reticulate/articles/python_packages.html
 
-\small
+\footnotesize
 
 ```{r}
 library(reticulate)
 use_python("/home/mcneney/miniconda3/bin/python") # required on my computer
 #conda_create("r-reticulate") # commented out to avoid re-doing every time I knit
 # install packages into this environment
-#conda_install("r-reticulate", "pandas") # commented out to avoid re-doing
+#conda_install("r-reticulate", c("pandas","scikit-learn")) # commented out to avoid re-doing
 ```
 
 ## Using a conda environment
 
 * For each R session in which you want to use your conda environment:
 
+\small 
+
 ```{r}
+library(reticulate)
+use_python("/home/mcneney/miniconda3/bin/python") # if necessary
 use_condaenv("r-reticulate")
 ```
 
@@ -165,9 +168,9 @@ interactively.
 \small
 
 ```{r}
-# repl_python()
+repl_python()
 # type your Python commands
 # objects will be available in R through py object
-# exit() to quit
+# exit to quit
 ```
 

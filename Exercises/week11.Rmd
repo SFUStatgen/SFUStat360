@@ -53,6 +53,6 @@ installed pandas and sklearn into; e.g.,
 
 ```{r}
 library(reticulate)
-use_python("/home/mcneney/miniconda3/bin/python") # modify as necessare
+use_python("/home/mcneney/miniconda3/bin/python") # modify as necessary
 use_condaenv("r-reticulate") # modify as necessary
 ```
