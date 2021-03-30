@@ -168,7 +168,7 @@ interactively.
 \small
 
 ```{r}
-repl_python()
+# repl_python()
 # type your Python commands
 # objects will be available in R through py object
 # exit to quit
