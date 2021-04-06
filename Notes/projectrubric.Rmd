@@ -30,10 +30,10 @@ Arrange your functions in a "top-down" manner,
 with higher-level functions appearing first,
 followed by successive levels of lower-level functions.
 You are graded on the following criteria:
-    * Data structures (2). The input and output data
-    structures should be those we agreed upon as a class.
-    Further details about these data structures will 
-    be provided as soon as possible.
+    * Data structures (2). The input data
+    structures should be a formula, data and `mars.control`
+    object. The output data structure is an S3 object
+    of class `mars` that inherits from class `lm`.
     * Correctness (5). There should be no errors in the code and
     it should correctly implement MARS (see *Test suite* below).
     * Readability (4): The steps and logic of your implementation
@@ -85,9 +85,17 @@ The documentation is for your `mars()` function and should include the following
 for an example and [Section 2.1.1 of the Writing R Extensions Manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Documenting-functions) for further details. (The manual is
 really too much detail for your project, but I provide 
 the link in case you are interested.)
-I highly recommend that you write the documentation in an 
-R markdown document, but ultimately the choice of word 
-processor is up to you.
+You can write the documentation using a word processor
+or RMarkdown, or have the documentation generated
+from roxygen2 comments in your source file. 
+If you go the roxygen2 route, you may need to copy the
+help file to HTML for printing; e.g., from an R session
+with your documentation directory as working directory,
+issue the following R commands:
+
+```
+sink("mars.html"); tools::Rd2HTML("mars.Rd"); sink()
+```
 
 1. (2 marks) Description (brief) -- a one- or two-line description of what the function does 
 2. (1 mark) Usage -- how to call the function
