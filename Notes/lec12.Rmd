@@ -265,7 +265,8 @@ as `R CMD check` from the command line.
 
 ## Topics not covered
 
-* Documenting classes, generics and methods: R packages, Chapter 10, SS 7
-* Vignettes: R packages, Chapter 11
-* Testing: R packages, Chapter 12
+* Much more detail on the process in the R Packages reference
+* Documenting classes, generics and methods: R Packages, Chapter 10, SS 7
+* Vignettes: R Packages, Chapter 11
+* Testing: R Packages, Chapter 12
 

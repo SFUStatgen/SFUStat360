@@ -14,11 +14,7 @@ The project is to consist of R code in your
 group's project folder on GitHub and 
 documentation submitted as a PDF file 
 to a Crowdmark assessment. The code and documentation
-are due at midnight on Sunday April 18.
-The current version of the criteria and grading scheme
-for the code and documentation are as follows.
-(I may need to tweak the criteria as we get further
-along in the project.)
+are due at 11:59pm on Tuesday April 20.
 
 ### Code on GitHub (40 marks)
 
