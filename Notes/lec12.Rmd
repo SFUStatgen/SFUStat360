@@ -119,7 +119,7 @@ existing R project or be under version control.
 ```{r}
 # install.packages("devtools")
 library(devtools)
-# create_package("/home/mcneney/MyRpackages/mars")
+create_package("/home/mcneney/MyRpackages/mars")
 ```
 
 ## Start your R source files
