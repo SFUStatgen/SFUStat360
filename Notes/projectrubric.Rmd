@@ -49,18 +49,20 @@ Include one file for each method you implement for
 MARS objects. 
 The criteria for the user interface are:
     * Correct (4 marks). All methods work correctly.
-    * Comprehensive (4 marks). You should implement
-    `predict()`, `plot()` and  `anova()` methods for `mars` objects. 
+    * Comprehensive (5 marks). You should implement
+    `anova()`, `plot()`, `predict()`, `print()` and `summary()` 
+    methods for `mars` objects. 
     (You can use the implementations of `residuals()` and
     `fitted()` that you inherit from the `lm` class.)
     * Familiar (4 marks). The user interface should
     look familiar to someone who has used `lm()` and `glm()`.
-    * Use your creativity (3 marks). This is the part of the
+    * Use your creativity (2 marks). This is the part of the
     project where you can combine your skills as an R 
     programmer and data analyst. What features would help
     users gain insight into their data and the fitted
     model? Think of something we have not discussed
-    as a class and implement it.
+    as a class and implement it. (**Note** I haven't thought of
+    anything myself and may remove this part of the rubric.)
 
 
 4. (10 marks) Test suite. A file `test.R` that
