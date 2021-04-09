@@ -49,10 +49,10 @@ Include one file for each method you implement for
 MARS objects. 
 The criteria for the user interface are:
     * Correct (4 marks). All methods work correctly.
-    * Comprehensive (4 marks). You should implement 
-    all the methods we discuss in class. For now, 
-    plan on implementing `residuals()`, `fitted()`, `predict()`
-    and `plot()`. Others will be discussed as we go.
+    * Comprehensive (4 marks). You should implement
+    `predict()`, `plot()` and  `anova()`. 
+    (You can use the implementations of `residuals()` and
+    `fitted()` that you inherit from the `lm` class.)
     * Familiar (4 marks). The user interface should
     look familiar to someone who has used `lm()` and `glm()`.
     * Use your creativity (3 marks). This is the part of the
