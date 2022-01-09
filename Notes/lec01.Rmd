@@ -13,15 +13,16 @@ output:
 
 ## Course objectives
 
-- Work through the book Advanced R by Hadley Wickham: https://adv-r.hadley.nz/index.html
-- R objects: names and values
-- Basic data structures and programming.
-    * vectors, subsetting, control flow, functions, environments
-    * No tidyverse this time
-- Object-oriented programming in R
-- Code performance: debugging, profiling, memory, calling 
-Python, C or ++ from R
-- Parallelizing R code (if time permits)
+- Work through most, but not all of the book Advanced R by Hadley Wickham: https://adv-r.hadley.nz/index.html
+- Topics:
+    - R objects: names and values
+    - Basic data structures and programming.
+        * vectors, subsetting, control flow, functions, environments
+        * No tidyverse this time
+    - Object-oriented programming in R
+    - Code performance: debugging, profiling, memory, calling 
+    Python, or C++ from R
+    - Parallelizing R code (if time permits)
 
 ## Getting started with R, RStudio and git
 
@@ -31,16 +32,17 @@ page to get set up with R, RStudio and git.
     before, so leave some time for that.
 - Please try to get R and RStudio installed and 
 create an RStudio project linked to the class GitHub 
-repository as soon as possible.
+repository (or a forked copy) as soon as possible.
 - Those still having trouble after the weekend should ask our TA, Pulindu,
 for help during the first lab sessions in week 2. 
+    - **Note: No lab first week**.
 
 
 ## Reading 
 
-- Welcome, Preface and Chapter 1 of the text.
+- Welcome, Preface and Chapters 1,2 of the text.
 
-# R objects: names and values
+# R objects
 
 ## R objects
 
@@ -52,15 +54,21 @@ as "objects".
     the user's workspace, called the global environment. 
     - Use `ls()` to see a list of all objects in the workspace. 
     - Use `rm(x)` to remove object `x` from the workspace.
+    
+## Digging deeper
 
-## Names and values
-
+* The above understanding is an over-simplification that
+is usually OK, but will sometimes lead to misunderstandings
+about  memory usage and when R makes copies of objects
+* Object copying is a **major** source of computational overhead in R,
+so it pays to understand what will trigger it.
 - Reference: text, chapter 2
-- The description on the previous slide of `x <- c(1,2,3)` is
-an over-simplification. 
-- It is more accurate to say we've done two things: (i) created
+
+## Binding names and to objects
+
+- The R code `x <- c(1,2,3)` does two things: (i) creates
 an object in computer memory 
-that contains 1, 2, 3 and (ii) "bound" that object to the 
+that contains the values 1, 2, 3 and (ii) "binds" that object to the 
 "name" `x`.
 
 \small
@@ -75,7 +83,23 @@ obj_addr(x) # changes every time this code chunk is run
 
 \normalsize
 
-## Syntactic *vs* non-syntactic
+## Binding multiple names to the same object
+
+* The following binds the name `y` to the same object
+that `x` is bound to.
+
+\small
+
+```{r}
+y <- x
+obj_addr(y)
+```
+
+\normalsize
+![Bind two names to the same object](bind2.png){width=60%} 
+
+
+## Aside: Syntactic *vs* non-syntactic
 
 * Valid, or "syntactic" names in R can consist of letters, digits, . 
 and _ but should start with a letter.
@@ -96,20 +120,20 @@ ls()
 
 
 
-## Modifying, copying, binding
+## Modifying causes copying
 
-* Mofifying a variable causes a copy to be made.
+* Modifying a variable causes a copy to be made, with the
+modified variable name bound to the copy.
 
 \footnotesize
 
 ```{r}
-x <- c(1,2,3); y <- x
 c(obj_addr(x),obj_addr(y))
 x[[2]] <- 10 # Note: x[2] <- 10 has the same effect
 c(obj_addr(x),obj_addr(y))
-x
-y
 ```
+\normalsize
+![Bindings after copying](bindnew.png){width=40%} 
 
 ## Tracing copying
 
@@ -122,8 +146,8 @@ whenever a copy is made.
 x <- c(1,2,3)
 tracemem(x)
 x[[2]] <- 10
-x <- 5 # removes the trace on the object
-x[[1]] <- 1
+untracemem(x)  # remove the trace
+x[[1]] <- 10
 ```
 
 ## More on `tracmem()`
@@ -153,7 +177,7 @@ copy-on-modify applies to functions too:
 ```{r}
 f <- function(arg) { return(arg) }
 x <- c(1,2,3)
-y <- f(x) # no copy made
+y <- f(x) # no copy made, so x and y bound to same obj
 c(obj_addr(x),obj_addr(y))
 f <- function(arg) { arg <- 2*arg; return(arg) }
 y <- f(x) # copy made
@@ -174,35 +198,40 @@ c(obj_addr(l1),obj_addr(l1[[1]]),obj_addr(l1[[2]]),obj_addr(l1[[3]]))
 # but doesn't work with my slides
 ```
 
+
 ## Copy-on-modify in lists
 
-* As you would expect, we only copy the list **elements** that
-are modified, rather than the entire list.
-    * `tracemem()` flags **any** change to the list
 
 \footnotesize
 
 ```{r}
-l1 <- list(c(1,2), c(3,4), c(5,6,7))
-c(obj_addr(l1),obj_addr(l1[[1]]),obj_addr(l1[[2]]),obj_addr(l1[[3]]))
-tracemem(l1)
-l1[[1]] <- 55
-c(obj_addr(l1),obj_addr(l1[[1]]),obj_addr(l1[[2]]),obj_addr(l1[[3]]))
+l1 <- l2 <- list(1,2,3)
 ```
 
-## Copies of lists are "shallow"
+![Bindings before](listbind2.png){width=30%} 
+
+```{r}
+l2[[3]] <- 4
+```
+
+![Bindings after modify](listbindnew.png){width=30%} 
+
+## Copies of lists are said to be "shallow"
+
+* As shown above, we copy the list itself and any list **elements** that are modified. This is called a ``shallow" copy.
+* By contrast, a ``deep" copy would be a copy of all elements.
 
 \footnotesize
 
 ```{r}
-l2 <- l1
-l2[[3]] <- 111
+l1 <- list(1,2,3)
 c(obj_addr(l1),obj_addr(l1[[1]]),obj_addr(l1[[2]]),obj_addr(l1[[3]]))
-c(obj_addr(l2),obj_addr(l2[[1]]),obj_addr(l2[[2]]),obj_addr(l2[[3]]))
+l1[[3]] <- 4 
+c(obj_addr(l1),obj_addr(l1[[1]]),obj_addr(l1[[2]]),obj_addr(l1[[3]]))
 ```
 
 
-## Data frames are lists ...
+## Data frames are lists with columns as list items 
 
 \footnotesize
 
@@ -210,25 +239,25 @@ c(obj_addr(l2),obj_addr(l2[[1]]),obj_addr(l2[[2]]),obj_addr(l2[[3]]))
 dd <- data.frame(x=1:3,y=4:6)
 c(obj_addr(dd[[1]]),obj_addr(dd[[2]]))
 dd[,2] <- 7:9
-c(obj_addr(dd[[1]]),obj_addr(dd[[2]]))
+c(obj_addr(dd[[1]]),obj_addr(dd[[2]])) # only changes second element
 dd[1,] <- c(11,22)
-c(obj_addr(dd[[1]]),obj_addr(dd[[2]]))
-dd[1,2] <- 111
-c(obj_addr(dd[[1]]),obj_addr(dd[[2]]))
+c(obj_addr(dd[[1]]),obj_addr(dd[[2]])) # changes to both elements
+dd[1,1] <- 111
+c(obj_addr(dd[[1]]),obj_addr(dd[[2]])) # only changes first element
 ```
 
 ## Beware of data frame overhead
 
 * Data frames are convenient, but the convenience comes at a cost.
-    * Can illustrate by tracing copying when we modify columns.
+    * For example, coercion to/from lists
 
 \footnotesize
 
 ```{r}
 dd <- data.frame(x=rnorm(100)) # try yourself with rnorm(1e7)
-tracemem(dd)
-dmed <- lapply(dd,median)
-dd[[1]] <- dd[[1]] - dmed[[1]] # same as dd[,1] - dmed[[1]]
+tracemem(dd); tracemem(dd[[1]])
+dmed <- lapply(dd,median) # makes a list copy of dd 
+dd[[1]] <- dd[[1]] - dmed[[1]] #  
 ```
 
 ##
@@ -239,16 +268,28 @@ dd[[1]] <- dd[[1]] - dmed[[1]] # same as dd[,1] - dmed[[1]]
 
 ```{r}
 ll <- list(x=rnorm(100))
-tracemem(ll)
-lmed <- lapply(ll,median)
+tracemem(ll); tracemem(ll[[1]])
+lmed <- lapply(ll,median) # no need for a list copy
 ll[[1]] <- ll[[1]] - dmed[[1]]
 ```
 
 
 ## Modify-in-place
 
-* The text claims two exceptions to the copy-on-modify, but
-in my experiments environments are the only one:
+* The text says there are two exceptions to the copy-on-modify:
+    1. Modify an element of an object with one binding, or 
+    2. Modify an environment.
+but in my experiments, only the second applies.
+
+\footnotesize
+
+```{r}
+v <- c(1,2,3) # creates object (1,2,3) and binds v to it
+tracemem(v)
+v[[3]] <- 4 # for me, this triggers a copy
+```
+
+##
 
 ![environments](env1.png){width=40%} ![environments](env2.png){width=40%}
 
@@ -257,8 +298,21 @@ in my experiments environments are the only one:
 ```{r}
 e1 <- rlang::env(a = 1, b = 2, c = 3)
 e2 <- e1
+# note: can't use tracemem() on an environment
 e1$c <- 4
 e2$c
 ```
 
+## Object size
+
+* Use `lobstr::obj_size()` to find the size of objects.
+
+\footnotesize
+
+```{r}
+obj_size(dd)
+obj_size(ll)
+obj_size(e1)
+obj_size(e2)
+```
 
