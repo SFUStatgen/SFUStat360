@@ -13,12 +13,15 @@ output:
 
 ## Course objectives
 
-- Work through most, but not all of the book Advanced R by Hadley Wickham: https://adv-r.hadley.nz/index.html
+- Make you R **programmers** rather than just R **users**, by 
+working through most of the book "Advanced R" by Hadley Wickham: https://adv-r.hadley.nz/index.html
 - Topics:
     - R objects: names and values
     - Basic data structures and programming.
         * vectors, subsetting, control flow, functions, environments
         * No tidyverse this time
+    - R packages (based on the [online text](https://r-pkgs.org) 
+    by Wickham and Bryan)
     - Object-oriented programming in R
     - Code performance: debugging, profiling, memory, calling 
     Python, or C++ from R
