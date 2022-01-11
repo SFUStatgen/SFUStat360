@@ -96,7 +96,6 @@ that `x` is bound to.
 ```{r}
 y <- x
 obj_addr(y)
-lm(y~x)
 ```
 
 \normalsize
