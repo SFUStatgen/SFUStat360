@@ -1,0 +1,60 @@
+---
+title: "Lab 1, week 2"
+author: "Pulindu Ratnasekera"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Get a GitHub account
+
+1. If you have not already done so, go to github.com, click "Sign Up" and create your GitHub account.
+2. Send the following information in an email to Pulindu (pratnase@sfu.ca) so that he can add you as a collaborator on the Stat 360 projects repository (https://github.com/SFUStatgen/SFUStat360Projects). 
+    - Include the words "Stat 360 GitHub user" in the subject of your message.
+    - Your Full Name (as shown in Canvas)
+    - SFU ID number
+    - GitHub Username
+    - GitHub Email Address (Email address you used to create the GitHub Account)
+
+3. When you are added to the repository,
+ create an R project
+from it and make sure you can commit files by adding 
+a file to the Sandbox folder. 
+4. Create a folder in the Projects directory of the
+repository. Inside your folder create a README.md file 
+that lists the names of your project team members.
+
+
+## Shell implementation of MARS algorithm
+
+1. Install the `rpart` and `earth` packages and read the help
+files for the `rpart()` and `earth()` functions. We will use
+these as a guide for our implementation.
+    a. Inspect the source code for `rpart()` by typing `rpart`
+    at the R command line (no parentheses).
+    a. Inspect the source code for `earth()` by typing `earth`
+    at the R command line (no parentheses). You will
+    see that `earth()` just calls `UseMethod("earth")`, which
+    by default calls the `earth.default()` function.
+    Inspect the contents of the `earth:::earth.default()`
+    function.
+2. Create an R script called `mars.R` that
+includes the following functions.
+3. Create a function called `mars()` that takes three
+arguments:
+    i. an R formula,
+    ii. a `data` argument
+    iii. a list called `control`
+The body of the `mars()` function should call two functions
+called `fwd_stepwise()` and `bwd_stepwise()`. 
+4. Write empty `mars.control()`, `fwd_stepwise()` functions that 
+each take no arguments and return an empty list.
+5. `bwd_stepwise()` should take the output of `fwd_stepwise()`
+as input, and for now should return an empty list.
+6. Have your `mars()` function return the output of `bwd_stepwise()`.
+
+* Note: We will be adding arguments, outputs, pre-processing steps,
+post-processing steps, etc., to all of these functions, but 
+for now they should serve as a skeleton for our MARS implementation.
