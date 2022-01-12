@@ -131,8 +131,9 @@ modified variable name bound to the copy.
 \footnotesize
 
 ```{r}
+x <- y <- c(1,2,3)
 c(obj_addr(x),obj_addr(y))
-x[[2]] <- 10 # Note: x[2] <- 10 has the same effect
+y[[3]] <- 4 # Note: x[2] <- 10 has the same effect
 c(obj_addr(x),obj_addr(y))
 ```
 \normalsize
