@@ -251,6 +251,18 @@ lvec[[4]]
 lvec$hair
 ```
 
+## Take care using `[[` for lists
+
+* `[[ ]]` (and `$`) can only return one item at a time. Trying 
+to extract more than one has unexpected results.
+
+\scriptsize
+
+```{r}
+lvec[[c(4,2)]] # the [[2]] element of lvec[[4]] !!
+# Error when you do this: lvec$c("hair","weight")
+```
+
 ## Subsetting factors
 
 - Subsetting may remove all instances of a level, but the 
