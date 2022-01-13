@@ -529,10 +529,23 @@ with different default behaviour.
 
 ```{r}
 library(tibble)
-df2 <- tibble(x = 1:3, y = letters[1:3])
-typeof(df2)
-attributes(df2)
+tt <- tibble(x = 1:3, y = letters[1:3])
+typeof(tt)
+attributes(tt)
 ```
+
+## More on subsetting
+
+* one-dimensional subsets of data frames are coerced to atomic
+vectors, but not so with tibbles.
+
+\scriptsize
+
+```{r}
+dd[,1]; dd[1,1]
+tt[,1]; tt[1,1]
+```
+
 
 ## List columns
 
