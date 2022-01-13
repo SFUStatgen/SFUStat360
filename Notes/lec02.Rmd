@@ -1,0 +1,681 @@
+---
+title: 'Statistics 360:  Advanced R for Data Science'
+subtitle: 'Lecture 2'
+author: "Brad McNeney"
+output: 
+  beamer_presentation:
+    includes:
+      in_header: header_pagenum.tex
+    toc: true
+---
+
+## Reading
+
+* Text, chapters 3 and 4
+
+
+# R Data Structures
+
+## R Data Structures
+
+- Fundamentally, all common data structures in R are vectors, which can 
+be "atomic" or "list".
+- R has no true scalars; e.g., in `x<-1`, `x` is a vector of length one.
+- Use `str()` to see the structure of an object
+
+## Types of objects
+
+- All R objects have a "type", that describes how it is stored
+in computer memory.
+- Common types we will encounter are "logical", "integer",
+"double", "character" and "list".
+    * Find the type of an object with `typeof()`.
+    
+    
+\scriptsize
+
+```{r}
+x <- 6 # stores as double by default
+typeof(x)
+y <- 6L # The "L" suffix forces storage as integer  
+typeof(y)
+```
+
+
+## Type *versus* Mode
+
+- In addition to the type of an object, there is its
+"mode". 
+- The mode of an object is generally the same as its type,
+but the modes are coarser.
+    - For example, integer and double types are both of mode
+    "numeric".
+- I don't understand the need for mode.
+    - The only reason I mention it is that the `str()` function 
+    sometimes reports the mode of an object, rather than
+    its type, so we will frequently see reports of numeric objects.
+
+\scriptsize
+
+```{r}
+mode(x)
+mode(y)
+```
+
+
+# Vectors 
+
+## Vectors
+\small
+
+- Vectors can be either atomic or list
+    - The elements of an atomic vector must be the same type.
+    - Lists can be comprised of multiple data types
+- Empty vectors can be created by the `vector()` function:
+
+\scriptsize
+
+```{r}
+# help("vector")
+avec <- vector(mode="numeric",length=4)
+lvec <- vector(mode="list",length=4)
+```
+
+\normalsize
+
+- Data vectors can be created with `c()` or `list()`:
+
+\scriptsize
+
+```{r}
+avec <- c(54,210,77)
+lvec <- list(54,210,77,c("grey","thin"))
+```
+
+
+## Combining vectors
+
+- Use `c()` to combine vectors
+
+\scriptsize
+
+```{r}
+c(avec,c(100,101))
+c(lvec,TRUE)
+```
+
+## Vector attributes
+
+- Vectors have a type and length and, optionally, attributes such as names. 
+    * As we have seen, we find the type of an object with `typeof()`.
+    * Find the length of a vector with `length()`.
+
+\footnotesize
+
+```{r}
+typeof(avec)
+length(avec)
+str(avec)
+```
+
+##
+
+\scriptsize
+
+```{r}
+typeof(lvec)
+length(lvec)
+names(lvec) = c("age","weight","height","hair")
+str(lvec)
+```
+
+\normalsize
+
+- We can specify element names when creating a vector; e.g.:
+
+\scriptsize
+
+```{r}
+lvec <- list(age=54,weight=210,height=77,hair=c("grey","thin"))
+```
+
+## More on attributes
+
+* More generally, attributes are used to store meta-data on an object.
+* Get with `attributes()` and set with `attr()` or `structure()`.
+
+\scriptsize
+```{r}
+attributes(lvec)
+attr(lvec,"at1") <- "abc" # add by name
+attr(lvec,"at2") <- 1:3
+attributes(lvec)
+```
+
+##
+
+\scriptsize
+
+```{r}
+x <- structure(list(1,2,3),names=c("a","b","c"),at1="abc",at2=1:3)
+attributes(x)
+```
+
+## Attributes after operations
+
+* Tend to be dropped. If not, they may not make sense.
+
+\scriptsize
+
+```{r}
+x <- structure(1:3,at1="abc")
+y <- structure(3:1,at1="def")
+x
+y
+x[1:2]
+x*y
+```
+
+## The `class` attribute
+
+- As special attribute named `class` is a key component of the
+"S3" object-oriented programming system (more on this later). 
+- Get and set with the `class()` function. 
+
+\scriptsize
+
+```{r}
+class(lvec) <- "prof"
+lvec
+```
+
+## S3 atomic vectors
+
+* There are four important classes of atomic vector: factors,
+Dates, POSIXct and difftime. 
+* We will discuss factors. See the text, section 3.4 for information
+on the others.
+
+## Factors
+
+- The statistical concept of a factor is important in experimental 
+design. 
+- Factors are implemented in R as atomic vectors with attributes
+`class` and `levels`:
+
+\scriptsize
+
+```{r}
+trt <- factor(c("drug1","placebo","placebo","drug2"))
+attributes(trt)
+str(trt)
+```
+
+##
+
+- The levels are coded numerically (1, 2 and 3)
+with assigned labels ordered alphabetically
+("drug1", "drug2" and "placebo") by default.
+- You can specify an order to the factors with 
+the `level` argument:
+
+\scriptsize
+
+```{r}
+trt <- factor(c("drug1","placebo","placebo","drug2"),
+              levels=c("placebo","drug1","drug2"))
+trt
+```
+
+
+
+
+## Subsetting vectors and extracting elements
+
+- Subset with `[` or by name:
+
+\scriptsize
+
+```{r}
+lvec[c(1,3)] # same as lvec[c("age","height")]
+```
+
+\normalsize
+
+- Extract individual elements with `[[`, or `$` for named objects:
+
+\scriptsize
+
+```{r}
+lvec[[4]]
+lvec$hair
+```
+
+## Subsetting factors
+
+- Subsetting may remove all instances of a level, but the 
+level will be retained in the data structure
+
+\scriptsize
+
+```{r}
+trt[1:3]
+```
+
+\normalsize
+
+- If subsetting is intended to remove a level of the factor, use `drop=TRUE`
+
+\scriptsize
+
+```{r}
+trt[1:3,drop=TRUE]
+```
+
+## Subsetting and assignment
+
+- You can combine subsetting and assignment to change 
+the value of vectors. 
+
+\scriptsize
+
+```{r}
+avec
+avec[2] <- 220
+avec
+```
+
+## Assignment to vector elements
+
+* To assign to a vector element, it is clearer to use `[[` rather than `[`.
+    - Also, for lists, assignment with `[` requires that the replacement 
+    element be of length 1; `[[` 
+    does not have this restriction
+    
+\scriptsize
+
+```{r}
+lvec[3:4] <- c("Hi","there")
+lvec[3:4]
+```
+
+##
+
+\scriptsize
+
+```{r}
+lvec[4] <- c("All","of","this")
+lvec[4] # Only used first element of replacement vector
+lvec[[4]] <- c("All","of","this")
+lvec[3:4]
+```
+
+
+## Coercion: atomic vectors to lists
+
+- Atomic vectors can be coerced to lists with `as.list()`:
+
+\scriptsize
+
+```{r}
+avec = c(age=54,weight=210,height=77)
+avec
+as.list(avec)
+```
+
+## Coercion: lists to atomic vectors
+
+- Lists can be "flattened" into atomic vectors with `unlist()`:
+
+\scriptsize
+
+```{r}
+unlist(lvec)
+```
+
+\small
+
+- Notice how the numeric values are coerced to the more flexible 
+character type. 
+- The order of flexibility, from least to most, is logical,
+integer, numeric, character.
+
+## Coercion: factors to atomic vectors
+
+- We saw how to use `factor()` to coerce an atomic vector to a factor.
+- Use `as.vector()` to coerce a factor back to an atomic vector. 
+- The result is a character vector. You may need to use `as.numeric()` to coerce to numeric, if required.
+
+\scriptsize
+
+```{r}
+a <-factor(c(2,1,1,2))
+as.vector(a)
+as.numeric(as.vector(a))
+```
+
+
+# Matrices, data frames and tibbles
+
+## Matrices and data frames
+
+- Matrices are implemented as atomic vectors with a "dim" attribute of
+length 2  (number of rows, number of 
+columns).
+- As an atomic vector, elements of a matrix must all be of the same type.
+- Data frames are lists where each list element
+has the same length. Thus data frames can include columns
+of varying type.
+
+## Matrices
+
+- Matrices can be created with the `matrix()` function as in 
+\scriptsize
+
+```{r}
+A <- matrix(1:4,nrow=2,ncol=2) 
+A
+```
+
+\normalsize
+
+- Here `1:4` is the same as `c(1,2,3,4)`
+
+##
+
+- The default is to read the data vector into the matrix column-by-column. To 
+read row-by-row instead use the `byrow=TRUE` argument:
+
+\scriptsize
+
+```{r}
+A <- matrix(1:4,nrow=2,ncol=2,byrow=TRUE) 
+A
+A <- matrix(c( 1, 2, 
+               3, 4),ncol=2,nrow=2,byrow=TRUE)
+```
+
+## Combining matrices
+
+
+- Combine matrices with `rbind()` and `cbind()`:
+
+\scriptsize
+
+```{r}
+rbind(A,matrix(c(5,6),nrow=1,ncol=2))
+cbind(A,A)
+```
+
+## Matrix attributes
+
+- Matrices have a type, dimension and optional attributes such as dimnames (row and column names).
+
+\scriptsize
+
+```{r}
+typeof(A)
+dim(A)
+```
+
+##
+
+\scriptsize
+
+```{r}
+colnames(A) <- c("var1","var2")
+rownames(A) <- c("subj1","subj2")
+A
+str(A)
+```
+
+## Subsetting matrices 
+\footnotesize
+
+- Subset with `[` and a comma to separate rows from columns:
+```{r}
+A[1,1]
+A[1,]
+A[,1]
+```
+- When a subsetting operation leads to a vector, the dimension 
+of the object is "dropped" from 2 to 1. To prevent this use
+`drop=FALSE`:
+```{r}
+A[1,,drop=FALSE]
+```
+
+
+## Extracting elements from matrices 
+\footnotesize
+
+- Can use `[[` to extract elements, but this is not necessary 
+because of the way subsetting to a single element drops to 
+a vector of length 1 by default:
+```{r}
+A[[1,1]]
+A[1,1]
+```
+
+## Coercion: Matrices to/from vectors
+- We have already seen how `matrix()` coerces a vector to a matrix
+- `as.vector()` applied to a matrix removes the dim attribute and 
+creates a vector by concatenating columns:
+```{r}
+as.vector(A)
+```
+
+##  Data frames
+\small
+
+- Data frames (class `data.frame`) are the usual way to 
+store data in R.
+    - Rows are intended to be observational units, columns variables
+    - Implemented as a list (columns are list elements), but also behave like a matrix in terms of combining and subsetting.
+- Create with `data.frame`:
+
+\footnotesize
+
+```{r}
+set.seed(1)
+n <- 4
+x <- 1:n; y <- rnorm(n,mean=x,sd=1) # multiple commands separated by ;
+dd <- data.frame(x=x,y=y) # like making a list
+str(dd)
+```
+
+## Row and column names
+
+* Get and set with `rownames()` and `colnames()`, respectively.
+* `names()` also gets and sets the column names
+
+\scriptsize
+
+```{r}
+colnames(dd); names(dd)
+rownames(dd) <- paste0("subj",1:nrow(dd))
+rownames(dd)
+```
+
+
+
+
+## Subsetting and combining data frames like a list
+
+\scriptsize
+
+```{r}
+dd$x 
+dd[[1]]
+```
+
+## Subsetting and combining data frames like a matrix
+
+\scriptsize
+
+```{r}
+dd[1:2,]
+zz = data.frame(z=runif(4))
+cbind(dd,zz)
+```
+
+## tibbles
+
+* A tidyverse replacement (or extension) of the data frame 
+with different default behaviour.
+* See section 3.6 for a discussion of some of the differences.
+
+\scriptsize
+
+```{r}
+library(tibble)
+df2 <- tibble(x = 1:3, y = letters[1:3])
+typeof(df2)
+attributes(df2)
+```
+
+## List columns
+
+* One way that tibbles improve on data frames is easier handling
+of columns whose elements are lists.
+
+\scriptsize
+
+```{r}
+tibble(
+  x = 1:3, 
+  y = list(1:2, 1:3, 1:4) # lists of different length on each subject
+)
+```
+
+
+# Logical  and relational operators
+## Logical operators
+\small
+
+- The basic logical operators are described in `help("Logic")`.
+- `!` is NOT
+- `&` and `&&` are AND, with `&` acting vector-wise and `&&` acting 
+on scalars
+- `|` and `||` are OR, with `|` acting vector-wise and `||` acting 
+on scalars
+- Make sure you understand the following:
+```{r}
+x <- c(TRUE,TRUE,FALSE); y <- c(FALSE,TRUE,TRUE)
+!x ; x&y ; x&&y ; x|y ; x||y
+```
+
+## 
+
+- Notice how `&&` and `||` act on the first element of the vectors
+`x` and `y` and ignore all the rest.
+
+
+## Relational operators
+\small
+
+- Relational operators can be used to compare values in atomic vectors
+    - See `help("Comparison")`
+- `>` is greater than, `>=` is greater than or equal
+- `<` is less than, `<=` is less than or equal
+- `==` is equal and `!=` is not equal
+- Make sure you understand the following:
+```{r}
+x <- 1:3; y <- 3:1
+x>y ; x>=y ; x<y ; x<=y ; x==y ; x!=y
+```
+
+
+## Subsetting vectors with logical expressions
+\footnotesize
+
+- Can subset with logicals and `[`:
+```{r}
+avec
+avec>100
+avec[avec>100]
+avec[avec>54 & avec<100]
+```
+
+## Subsetting matrices with logical expressions
+
+- Can also subset matrices, but results may not be as expected:
+```{r}
+A
+A>1
+A[A>1] # coerces to a vector
+```
+
+## Subset and assign with logical expressions
+\footnotesize
+
+- Combine subset and assign to change the value of objects
+```{r}
+A[A>1] <- 9
+A
+```
+- In the above substitution, the vector 9 is shorter than the 
+three elements in `A>1` so R "recycles" the 9 three times. 
+
+## Be careful about recycling:
+
+\footnotesize
+
+```{r}
+A[A>1] <- c(-10,10) # Throws a warning 
+A # R used c(-10,10), then just the -10 
+```
+
+# Aside: Special values
+
+## Missing values
+\small
+
+- R has a special data code for missing data: `NA`
+- Test for and set missing values with `is.na()`
+```{r}
+avec
+is.na(avec)
+is.na(avec) <- 2 
+avec
+```
+
+
+
+## Infinite and undefined values
+
+\footnotesize
+
+- R has a special codes for infinite 
+values (`Inf`) and undefined values (`NaN`).
+
+- Test for `Inf` and `NaN` with `is.infinite()` and `is.nan()`.
+```{r}
+ii <- 1/0 ; nn <- 0/0
+ii
+is.infinite(ii)
+nn
+is.nan(nn)
+```
+
+## The null object
+
+- The null object, `NULL`, is an un-typed no-value object.
+    - Test for `NULL` with `is.null()`
+    - `NULL` can be used to initialize objects 
+    that will be created through combining, rbinding, etc.
+    
+\footnotesize
+
+```{r}
+x <- NULL; is.null(x)
+x <- c(x,1); x <- c(x,2); x 
+# etc., or as a loop (more on these later)
+x <- NULL
+for(i in 1:2) {
+  x <- c(x,i)
+}
+x
+```
+
+ 
