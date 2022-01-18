@@ -104,6 +104,28 @@ c(avec,c(100,101))
 c(lvec,TRUE)
 ```
 
+## Combining lists
+
+* `c()` concatenates two lists, which may or may not be what you intend.
+
+\scriptsize
+
+```{r}
+ll1 <- list(a=1:2,b=3:4); ll2 <- list(a=5:6,b=7:8)
+c(ll1,ll2) # not the same as list(ll1,ll2)
+```
+
+##
+
+* A list of lists:
+
+\scriptsize
+```{r}
+c(list(ll1),list(ll2)) # keep this in mind for the project
+```
+
+
+
 ## Vector attributes
 
 - Vectors have a type and length and, optionally, attributes such as names. 
@@ -178,7 +200,7 @@ x*y
 
 ## The `class` attribute
 
-- As special attribute named `class` is a key component of the
+- A special attribute named `class` is a key component of the
 "S3" object-oriented programming system (more on this later). 
 - Get and set with the `class()` function. 
 
@@ -232,7 +254,7 @@ trt
 
 ## Subsetting vectors and extracting elements
 
-- Subset with `[` or by name:
+- Subset with `[`:
 
 \scriptsize
 
