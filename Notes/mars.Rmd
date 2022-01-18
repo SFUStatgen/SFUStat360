@@ -1,0 +1,96 @@
+---
+title: 'Statistics 360:  Advanced R for Data Science'
+subtitle: "Multivariate Adaptive Regression Splines (MARS)"
+author: "Brad McNeney"
+output: 
+  beamer_presentation:
+    includes:
+      in_header: header_pagenum.tex
+    toc: true
+    fig_width: 4
+    fig_height: 2.5
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning=FALSE,message=FALSE)
+```
+
+
+## Example Data
+
+\footnotesize
+
+```{r}
+library(tidyverse)
+library(ISLR)
+data(Wage) # help(Wage) for info
+ggplot(Wage,aes(x=age,y=wage)) + geom_point(alpha=.2) + geom_smooth()
+```
+
+## 
+
+\footnotesize
+
+```{r}
+library(earth)
+ee <- earth(wage ~ age, data=Wage)
+Wage <- mutate(Wage,pwage = predict(ee))
+ggplot(Wage,aes(x=age,y=wage)) + geom_point(alpha=.2) + geom_smooth()+
+  geom_line(aes(y=pwage),color="red")
+```
+
+## 
+
+\footnotesize
+
+```{r}
+summary(ee)
+```
+
+
+##
+
+\footnotesize
+
+```{r}
+ggplot(Wage,aes(x=age,y=wage)) + geom_point(alpha=.2) +
+  geom_line(aes(y=pwage),color="red") +
+  geom_vline(xintercept=38) +
+  geom_vline(xintercept=63)
+```
+
+
+## Hinge functions
+
+* The points 38 and 63 are "knots" where the piece-wise 
+linear function changes slope.
+* The piece-wise linear fit is a linear model in a constant 
+term (intercept) 
+and two "hinge" functions, $h(38-age)$ and $h(age-63)$, where
+$$
+h(x) = \max(0,x)
+$$
+* Hinge functions $h(x-c)$ and $h(c-x)$ are called mirror image.
+    * Exercise: Plot two mirror-image hinge functions for 
+    `x <- seq(from=0,to=50,length=100)` and `c<-50`. 
+    Why are they called mirror image?
+
+
+## Fitting
+
+* Once we are given the knots and hinge functions, the fit can
+be obtained by least squares.
+
+\footnotesize
+
+```{r}
+Wage <- mutate(Wage,h1=pmax(0,38-age),h2=pmax(0,age-63))
+ff <- lm(wage ~ h1+h2,data=Wage)
+summary(ff)$coefficients
+```
+
+## Questions
+
+* How do we choose the knots?
+* What happens when there are multiple explanatory variables, and 
+we allow for interactions between them?
