@@ -1,0 +1,358 @@
+---
+title: 'Statistics 360:  Advanced R for Data Science'
+subtitle: 'Lecture 3'
+author: "Brad McNeney"
+output: 
+  beamer_presentation:
+    includes:
+      in_header: header_pagenum.tex
+    toc: true
+---
+
+# Control Flow
+
+## Control Flow
+
+- Reading: text, chapter 5
+- if/if-else, ifelse, switch
+- for
+- while
+- break
+
+## `if` and `if`-`else` 
+
+
+- `if` tests a condition and executes code if the condition is true. Optionally, can couple with an `else` to specify code to execute
+when condition is false.
+
+\scriptsize
+
+```{r}
+if("cat" == "dog") {
+  print("cat is dog")
+} else {
+  print("cat is not dog")
+}
+```
+
+## `if` returns a value
+
+- The body of the if-else can evaluate expressions and store results,
+but note that if-else also returns a value.
+
+\scriptsize
+
+```{r}
+cnd <- if("cat" == "dog")  "cat is dog" else "cat is not dog"
+cnd
+```
+
+## `if` expects a single logical
+
+- most other inputs will cause an error
+- logical vectors will not throw an error, but `if` will only
+use the first element
+
+\scriptsize
+
+```{r}
+try(if("cat") print("cat"))
+if(c("cat"=="dog","cat" == "cat")) print("hello world") 
+```
+
+## `ifelse()`: vectorized `if`
+
+- `ifelse()` can handle logical vectors
+- syntax is condition, what to return if expression true, what
+to return if expression false
+
+\scriptsize
+```{r}
+x <- 1:10
+ifelse(x %% 2 == 0, "even","odd")
+```
+
+## `switch`
+
+- If you have multiple conditions to check, consider `switch` instead
+of repeated if-else; e.g. \scriptsize
+    * `if(x==1) "cat" else if(x==2) "dog" else if (x==3) "mouse"`
+
+\scriptsize
+
+```{r}
+x <- 2 # numeric argument
+switch(x,"cat","dog","mouse") # evaluate the x'th element
+x <- "dog" #character argument
+switch(x,cat="hi cat",dog="hi dog",mouse="hi mouse",
+       warning("unknown animal")) # if we make it to the last condition
+switch("kangaroo",cat="hi cat",dog="hi dog",mouse="hi mouse",
+       warning("unknown animal"))
+```
+
+
+## `for` loops
+
+- Example:
+
+\scriptsize
+
+```{r}
+n <- 10; nreps <- 100; x <- vector(mode="numeric",length=nreps)
+for(i in 1:nreps) {
+  # Code you want to repeat nreps times
+  x[i] <- mean(rnorm(n))
+}
+summary(x)
+print(i)
+```
+
+## `for` loop index set
+
+\small
+
+- Index sets such as `1:n` are most common, but 
+can be almost any atomic vector.
+
+```{r}
+ind <- c("cat","dog","mouse")
+for(i in ind) {
+  print(paste("There is a",i,"in my house"))
+}
+```
+
+## `seq_along` 
+
+* A common use of for loops is to iterate over elements
+of a vector, say x. 
+* Creating the index set `1:length(x)` will not be what you 
+expect when x has length 0 (e.g., x is NULL).
+* Instead use `seq_along()`
+
+\scriptsize
+
+```{r}
+x <- NULL
+for(i in 1:length(x)) print(x[i])
+
+for(i in seq_along(x)) print(x[i])
+```
+
+
+
+## `while` loops
+
+\small
+
+- Use a `while` loop when you want to continue until
+some logical condition is met.
+
+```{r}
+set.seed(1)
+# Number of coin tosses until first success (geometric distn)
+p <- 0.1; counter <- 0; success <- FALSE
+while(!success)  {
+  success <- as.logical(rbinom(n=1,size=1,prob=p))
+  counter <- counter + 1
+}
+counter
+```
+
+## `break`
+
+- `break` can be used to break out of a `for` or `while` loop.
+
+```{r}
+for(i in 1:100) {
+  if(i>3) break
+  print(i)
+}
+```
+
+## `repeat`
+
+* `repeat` continues indefinitely until it encounters a `break`
+* The text considers `repeat` to be the most flexible of `for`, `while`
+and `repeat`.
+
+
+# R Functions
+
+## R function fundamentals
+
+* Reading: text sections 6.1 and 6.2
+\small
+- In R, functions are objects with three essential components: 
+    - the code inside the function, or `body`,
+    - the list of arguments to the function, or `formals`, and
+    - an `environment` that contains all objects defined
+    in the function.
+    
+- Functions can have other attributes, but the above three are 
+essential.
+
+## Example function 
+\scriptsize
+
+```{r}
+f <- function(x) {
+  return(x^2)
+}
+f
+```
+
+## The function body
+\small
+
+- This is the code we want to execute. 
+- When the end of a function is reached without a call to 
+`return()`, the value of the last line is returned.
+    - So in our example function, we could replace `return(x^2)` 
+    with just `x^2.
+- Use `body()` to see the body of a function.
+
+\scriptsize
+
+```{r}
+body(f)
+```
+
+## The function formals
+
+
+- These are the arguments to the function. 
+- Function arguments can have default values and/or be defined
+in terms of other arguments.
+
+\scriptsize
+
+```{r}
+f <- function(x=0) { x^2} 
+f <- function(x=0,y=3*x) { x^2 + y^2 }
+f()
+f(x=1)
+f(y=1)
+```
+
+##
+
+\scriptsize
+
+```{r}
+formals(f)
+```
+
+
+## Argument matching when calling a function
+\footnotesize
+
+- When you call a function, the arguments are matched first by 
+name, then by "prefix" matching and finally by position:
+```{r}
+f <- function(firstarg,secondarg) {
+  firstarg^2 + secondarg
+}
+f(firstarg=1,secondarg=2)
+f(s=2,f=1)
+f(2,f=1)
+f(1,2)
+```
+
+## The function environment
+
+- R creates an environment (with `rlang::env()`) within each function call to hold its variables.
+- Initially includes the formals, but variables created within the function are also stored in this
+environment
+
+\scriptsize
+
+```{r}
+f <- function(x) {
+  y <- x^2
+  ee <- environment() # Returns ID of environment w/in f
+  print(ls(ee)) # list objects in ee
+  ee
+}
+# After a function call its environment is usually discarded
+my_ee <- f(1:3) # but not if you bind it to a name
+my_ee$new_var <- 100
+x <- 1:100
+ls(my_ee)
+```
+
+
+##
+
+\scriptsize
+
+```{r}
+environment(f)
+```
+
+## Enclosing environments
+\small
+
+- Our function `f` was defined in the global environment,
+`.GlobalEnv`,
+which "encloses" the environment within `f`.
+- If `f` needs a variable and can't find it within
+`f`'s environment, it will look for it in the enclosing 
+environment, and then the enclosing environment of `.GlobalEnv`,
+and so on. 
+- The `search()` function lists the heirarchy of 
+environments that enclose `.GlobalEnv`. 
+```{r}
+search()
+```
+- To facilitate this search, each environment includes 
+a pointer to its enclosing environment.
+
+## R packages and the search list
+
+\small
+
+- Use the `library()` command to load packages.
+- When we load a package
+it is inserted in position 2 of the search list, 
+just after `.GlobalEnv`.
+
+\footnotesize
+
+```{r}
+# install.packages("hapassoc")
+library(hapassoc) 
+search()
+```
+
+## Detaching packages
+
+- Detach a package from the search list with `detach()`
+
+\footnotesize
+
+```{r}
+detach("package:hapassoc")
+search()
+```
+
+## Package namespaces
+\small
+
+- Package authors create a list of objects
+that will be visible to users when the package
+is loaded. This list is called  the package namespace.
+- You can access functions in a package's namespace 
+without loading the package using
+the `::` operator.
+```{r}
+set.seed(321)
+n<-30; x<-(1:n)/n; y<-rnorm(n,mean=x); ff<-lm(y~x)
+car::sigmaHat(ff)
+```
+- Doing so does not add 
+the package to the search list.
+
+
+## Up next
+
+* Reading: Text, sections 6.4-6.8
