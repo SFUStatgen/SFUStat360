@@ -1,0 +1,60 @@
+---
+title: "Stat 360 Week 1 exercises"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+1. On which line does a get copied in the following example?
+```{r}
+a <- c(1, 5, 3, 2)
+b <- a
+b[[1]] <- 10
+```
+
+*Solution* Line 3:
+
+```{r}
+a <- c(1, 5, 3, 2)
+tracemem(a)
+b <- a
+tracemem(b)
+b[[1]] <- 10
+```
+
+2. In the following code chunk, does `x` get copied? Does `ll` get copied? Does  `ee` get copied?
+```{r}
+x <- rnorm(100); y <- rnorm(100)
+ll <- list(x=x,y=y)
+ll$x <- 1:100
+ee <- rlang::env(x=x,y=y)
+ee$x <- 1:100
+```
+
+*Solutions* Use `tracemem()` on `x`, `y` and `ll` to see that only `ll` 
+gets copied. (Recall that you can't put a trace on the environment `ee`.)
+
+3. Find the size of the objects x and y in the following code chunk.
+Which is smaller? If instead of vectors from 1 to 10 they were vectors
+from 1 to 1 million, which would be smaller?
+
+```{r}
+x <- c(1,2,3,4,5,6,7,8,9,10)
+y <- 1:10
+```
+
+*Solution* Use `lobstr::obj_size()` to see that `x` is actually 
+smaller! However, for vectors of length 1 million `y` would be smaller. 
+You can see this if, for example, you generate 1 million random numbers:
+
+```{r}
+lobstr::obj_size(x)
+lobstr::obj_size(y)
+x <- rbinom(1e6,10,.5)
+y <- 1:1e6
+lobstr::obj_size(x)
+lobstr::obj_size(y)
+```
