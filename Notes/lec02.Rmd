@@ -534,7 +534,7 @@ rownames(dd)
 
 
 
-## Subsetting and combining data frames like a list
+## Subsetting data frames like a list
 
 \scriptsize
 

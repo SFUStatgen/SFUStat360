@@ -236,6 +236,9 @@ f(y=1)
 
 ##
 
+* Use `formals()` to see the formals of a function and 
+their default values.
+
 \scriptsize
 
 ```{r}
