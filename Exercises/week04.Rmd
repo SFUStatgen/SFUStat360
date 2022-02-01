@@ -195,6 +195,7 @@ leave gaps in the covariate space. (Ask yourself why.)
 Write a snippet of R code that tests your function.
 4. Run `recpart()` with your versions of `split_points()`,
 `LOF()` and `split.region()`. Use the test data `x` and `y` 
-defined in the testing code chunk. At this point you do
-not need to check that the output is correct; you will get 
-a chance to to that in lab 3.
+defined in the testing code chunk as input and save your 
+output to an object called `testres`. The object will not 
+print properly at this point. We will write a print method
+in lab 3. You do not need to check that the output is correct.
