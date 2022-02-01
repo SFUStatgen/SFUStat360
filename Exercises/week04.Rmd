@@ -197,4 +197,4 @@ Write a snippet of R code that tests your function.
 `LOF()` and `split.region()`. Use the test data `x` and `y` 
 defined in the testing code chunk. At this point you do
 not need to check that the output is correct; you will get 
-a chance to to that in lab 2.
+a chance to to that in lab 3.

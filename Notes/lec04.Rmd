@@ -55,6 +55,21 @@ f <- function() { # f's env enclosed by global
 f()
 ```
 
+## Functions *vs* names
+
+* R does the "right thing" when you (stupidly) use the same 
+name for a function and variable.
+
+\scriptsize
+
+```{r}
+g09 <- function(x) x + 100
+g10 <- function() {
+  g09 <- 10
+  g09(g09)
+}
+g10()
+```
 ## Each function call gets a new environment
 
 * As we saw in lecture 3, function calls create an environment.
@@ -82,8 +97,7 @@ not when created (static lookup).
 it will return different results whenever the object in 
 the enclosing environment changes.
     * This may be what you intend, but it's also a common source
-    of errors. What if in the following I meant to define y
-    in f() but forgot?
+    of errors. What if I meant to define y in f() but forgot:
 
 \scriptsize
 
@@ -94,9 +108,10 @@ f <- function(x) {
 }
 f(1)
 y <- 200
-f(1)
+f(1) 
 ```
 
+* consider adding `rm(list=ls())` to the start of your scripts
 
 # Lazy evaluation and ...
 
