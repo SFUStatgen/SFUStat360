@@ -174,7 +174,7 @@ pre code {
 <h2>Testing the new <code>recpart_fwd()</code></h2>
 <ol style="list-style-type: decimal">
 <li><p>The code chunk at the end of the lab includes revised <code>recpart()</code> and <code>recpart_recursive()</code> functions that include a <code>debug</code> option, set to <code>FALSE</code> by default. If <code>TRUE</code>, <code>recpart_recursive()</code> prints the variable and split point of each split it encounters. Run <code>recpart()</code> on the test dataset from lab 3 and with <code>debug=TRUE</code> to see the split points.</p></li>
-<li><p>Run <code>recpart_fwd()</code> (with your versions of <code>init_B()</code> and <code>split_points()</code>) on the test dataset from lab 3 with Mmax=9 and compare the splits to those found by <code>recpart_recursive()</code>. They should be the same.</p></li>
+<li><p>Run <code>recpart_fwd()</code> (with your versions of <code>init_B()</code> and <code>split_points()</code>) on the test dataset from lab 3 with Mmax=9 and compare the splits to those found by <code>recpart_recursive()</code>. You may find that the splits are in a different order, but the partition should be the same.</p></li>
 </ol>
 <ul>
 <li>Note: The code chunks that support <code>recpart_fwd()</code> and <code>recpart()</code> <strong>both</strong> include a function called <code>split_points()</code>, so you will have to re-source the relevant code between calls to <code>recpart_fwd()</code> and <code>recpart()</code></li>

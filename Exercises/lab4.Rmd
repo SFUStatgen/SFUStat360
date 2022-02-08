@@ -20,7 +20,7 @@ and with `debug=TRUE` to see the split points.
 
 2. Run `recpart_fwd()` (with your versions of `init_B()` and `split_points()`) on the test dataset from lab 3 with Mmax=9
 and compare the splits to those found by `recpart_recursive()`.
-They should be the same.
+You may find that the splits are in a different order, but the partition should be the same.
 
 * Note: The code chunks that support `recpart_fwd()` 
 and `recpart()` **both** include a function called `split_points()`,
