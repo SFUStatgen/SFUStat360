@@ -149,7 +149,7 @@ recpart <- function(x,y){
 recpart_recursive <- function(node) {
   R <- node$data
   # stop recursion if region has a single data point
-  if(length(R$y) == 1) { return(NULL) }
+  if(length(R$y) == 1) { return(node) } # NB: was return(NULL)
   # else find a split that minimizes a LOF criterion
   # Initialize
   lof_best  <- Inf
