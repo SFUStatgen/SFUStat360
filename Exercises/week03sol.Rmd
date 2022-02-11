@@ -1,0 +1,145 @@
+---
+title: "Week 3 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Control flow
+
+1. What type of vector does each of the following return?
+
+```{r}
+ifelse(TRUE, 1, "no")
+ifelse(FALSE, 1, "no")
+ifelse(NA, 1, "no")
+```
+
+*Solution* Use `typeof()` to see that they are double, character
+and logical. The last one is a bit surprising.
+
+
+2. Re-write the following using `switch`
+
+```{r}
+IQR_mid <- function(x) mean(quantile(x,c(.25,.75)))
+cc <- function(x,method) {
+  if(method=="mean") {
+    mean(x)
+  } else if(method=="median") {
+    median(x)
+  } else if(method=="IQR_mid") {
+    IQR_mid(x)
+  } else stop("centring method ",method," not implemented")
+}
+set.seed(123)
+x <- c(-3,rnorm(100),1000)
+cc(x,"mean")
+cc(x,"median")
+cc(x,"IQR_mid")
+try(cc(x,"cat"))
+```
+
+*Solution*
+
+```{r}
+IQR_mid <- function(x) mean(quantile(x,c(.25,.75)))
+cc <- function(x,method) {
+  switch(method,mean=mean(x),median=median(x),IQR_mid=IQR_mid(x),
+         stop("centring method ",method," not implemented"))
+}
+set.seed(123)
+x <- c(-3,rnorm(100),1000)
+cc(x,"mean")
+cc(x,"median")
+cc(x,"IQR_mid")
+try(cc(x,"cat"))
+```
+
+
+3. Rewrite the following function so that 
+it uses a `while()` loop instead of the 
+`for()` loop and `break` statement. Your while-approach
+will not require the `maxit` upper limit on the 
+number of iterations.
+```{r}
+rtruncNormal <- function(thresh = 2, maxit=1000) {
+  x<-NULL
+  for(i in 1:maxit) {
+    xnew <- rnorm(n=1)
+    if(xnew>thresh) {
+      break
+    }
+    x <- c(x,xnew)
+  }
+  x
+}
+set.seed(1234)
+rtruncNormal()
+```
+
+*Solution* The first of the following implementations
+is more straightforward. The second works because the
+assignment to xnew is done before checking the condition
+in the while loop.
+
+```{r}
+rtruncNormal <- function(thresh = 2) {
+  x<- NULL; xnew <- rnorm(n=1)
+  while(xnew<= thresh){
+    x <- c(x,xnew)
+    xnew <- rnorm(n=1)
+  }
+  x
+}
+rtruncNormal <- function(thresh = 2) {
+  x<-NULL
+  while((xnew <- rnorm(n=1)) <= thresh){
+    x <- c(x,xnew)
+  }
+  x
+}
+set.seed(1234)
+rtruncNormal()
+```
+
+## Functions
+
+4. The following code chunk is typed into the R Console.
+    - What is the output of the function call `f(5)`?
+    - What is the enclosing environment of `f()`?
+    - What is the enclosing environment of `g()`?
+    - What search order does R use to find the 
+    value of `x` when it is needed in `g()`?
+```
+x <- 1
+f <- function(y) {
+  g <- function(z) {
+    (x+z)^2
+  }
+  g(y)
+}
+f(5)
+```
+
+```{r}
+x <- 1
+f <- function(y) {
+  g <- function(z) {
+    (x+z)^2
+  }
+  g(y)
+}
+f(5)
+```
+
+*Solution*
+
+- 36
+- Global env
+- environment in f()
+- environment in g(), then environment in f(), then global envirnoment
