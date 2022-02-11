@@ -200,7 +200,7 @@ recpart &lt;- function(x,y,debug=FALSE){
 }
 recpart_recursive &lt;- function(node,debug=FALSE) {
   R &lt;- node$data
-  if(length(R$y) == 1) { return(NULL) }
+  if(length(R$y) == 1) { return(node) }
   lof_best  &lt;- Inf
   for(v in 1:ncol(R$x)){ 
     tt &lt;- split_points(R$x[,v]) 
