@@ -58,7 +58,7 @@ from 1 to some maximum number
         $B_R(x) I(x_v \leq t)$ and $B_R(x) I(x_v \geq t)$ to 
         minimize a LOF criterion. (This is like our recursive partitioning.)
 
-## Week 5 lab 
+## Week 5 lab (lab 4)
 
 * Re-implement recursive partitioning with the
 forward stepwise regression algorithm outlined above.
