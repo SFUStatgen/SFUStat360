@@ -19,8 +19,6 @@ knitr::opts_chunk$set(echo = TRUE,warning=FALSE,message=FALSE)
 
 * Input
 * Pre-processing
-* Output
-* Methods
 
 ## Software arguments/inputs
 
@@ -42,12 +40,11 @@ the fitting process.
 * `lm()` does a bit of pre-processing, incuding
 setup of the design matrix `x` and response variable `y`,
 and then calls `lm.fit()` to do the fitting.
-* What we have so far in `fwd_selection()` and 
-`bwd_selection()` amounts to an implementation 
-of `lm.fit()`. 
+* Our `fwd_selection()` and 
+`bwd_selection()` functions will act like `lm.fit()`. 
 * We need code to 
 transform the formula, data, and control parameters
-into the inputs to `fwd_selection()`.
+into inputs for `fwd_selection()`.
 
 ## `lm()`
 
@@ -150,38 +147,10 @@ mars <- function(formula,data,control=NULL...) {
   y <- model.response(mf)
   mt <- attr(mf, "terms")
   x <- model.matrix(mt, mf)
-  # if(is.null(control)) call the helper with default values
-  # Then you are ready to go ...
+  fwd <- fwd_stepwise(y,x,control) # Note change from earlier implementation
+  bwd <- bwd_stepwise(fwd,control)
+  # Now prepare the output and return a "mars" object -- 
+  # to be discussed in a future lecture
 }
 ```
 
-
-## Value/output
-
-* object of S3 class `mars`.
-* inherits from class `lm` and includes
-all of the components of the `lm()` from the final fit
-    * Use `c()` to combine these with any of your
-    own components.
-* include `splits` data structure from final fit.
-* write a constructor for this class -- no need 
-for a validator or helper since you are the only
-one who will call the constructor.
-    
-## Methods
-
-* Use `methods()` to find a list of methods implemented
-for the S3 class `lm`.
-* Write more informative `print` and `summary` methods
-for `mars` objects
-* Write a `plot` method. 
-    * The details are up to you, but you 
-    should consult Section 3.5 of the Friedman paper (ANOVA decomposition).
-    * Two sources of inspiration are the `plot.earth` method
-    for `earth` objects (see the earth package), and `plot.Gam` for
-    plotting generalized additive model components 
-    (see the gam package).
-* Write a `predict` method with the same
-interface as `predict.lm`.
-* `residuals()`, `fitted()`, `hatvalues()` and others
-that depend only on the final `lm` can be used as-is

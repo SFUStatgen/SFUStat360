@@ -1,0 +1,56 @@
+---
+title: 'Statistics 360:  Advanced R for Data Science'
+subtitle: "MARS, part V"
+author: "Brad McNeney"
+output: 
+  beamer_presentation:
+    includes:
+      in_header: header_pagenum.tex
+    toc: true
+    fig_width: 4
+    fig_height: 2.5
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning=FALSE,message=FALSE)
+```
+
+## More details on the implementation
+
+* So far we have discussed the input, pre-processing,
+forward algorithm and backward algorithm.
+* Next is to bundle the output into an object of class mars
+and write methods for mars objects.
+
+## Value/output
+
+* object of S3 class `mars`.
+* inherits from class `lm` and includes
+all of the components of the `lm()` from the final fit
+    * Use `c()` to combine these with any of your
+    own components.
+    * Note: `bwd_selection()` will *select* the best model
+    but will not *return* the fit. You will need to call `lm()`
+    after `bwd_selection()` to obtain the final fit.
+* include `Bfuncs` data structure from final fit.
+* write a constructor for this class -- no need 
+for a validator or helper since you are the only
+one who will call the constructor.
+    
+## Methods
+
+* Use `methods()` to find a list of methods implemented
+for the S3 class `lm`.
+* Write more informative `print` and `summary` methods
+for `mars` objects
+* Write a `plot` method. 
+    * The details are up to you, but you 
+    should consult Section 3.5 of the Friedman paper (ANOVA decomposition).
+    * Two sources of inspiration are the `plot.earth` method
+    for `earth` objects (see the earth package), and `plot.Gam` for
+    plotting generalized additive model components 
+    (see the gam package).
+* Write a `predict` method with the same
+interface as `predict.lm`.
+* `residuals()`, `fitted()`, `hatvalues()` and others
+that depend only on the final `lm` can be used as-is
