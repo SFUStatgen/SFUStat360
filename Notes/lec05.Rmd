@@ -112,7 +112,7 @@ new R project
 existing R project or be under version control.
 * Launches a new RStudio session in the newly-created directory/project
     * Switch to this new session.
-    * Call `use_git()` to initialize a git repository
+    * If needed, call `use_git()` to initialize a git repository
 
 ##
 
@@ -204,12 +204,14 @@ the function.
 #' @examples
 #' mm <- mars(wage ~ age,data=ISLR::Wage)
 #' @import stats
+#' @import ISLR
 ```
 
 ## Call `document()`
 
-* Calling `document()` will create the .Rd file from your comments
-and add `mars()` to the mars NAMESPACE file.
+* Calling `document()` will create the .Rd file from your comments, and
+add `mars` as an "export" and `stats` and `ISLR` as "imports" in the mars NAMESPACE file.
+    * See below for Imports
 
 \small
 
@@ -232,14 +234,15 @@ Rendering development documentation for 'mars'
     * "Depends" -- you expect that users will always want 
     to call library(package) when loading your package -- not common these days
     * "Imports" -- you need to call functions from the NAMESPACE of another
-    package. Add these to the NAMESPACE with `use_package()` and to
-    the DESCRIPTION file yourself.
+    package. Add these to the DESCRIPTION file with `use_package()`.
     * "Suggests" -- Packages that are not crucial, but helpful (e.g.,
     used in examples). Add these to the DESCRIPTION file yourself
     * "Enhances" -- Packages that are enhanced by yours -- not common
     
 ```{r}
 # use_package("stats")
+# use_package("ISLR") # used in mars example
+# document()
 ```
 
 
