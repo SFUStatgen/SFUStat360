@@ -1,5 +1,5 @@
 ---
-title: "Week 3 exercises"
+title: "Week 3 exercise solutions"
 author: "Brad McNeney"
 output: html_document
 ---

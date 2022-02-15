@@ -46,7 +46,7 @@ the source of unexpected errors.
 so that the code can run as it did when the error was triggered.
 * Next reduce the code to a minimal example that triggers the problem.
     * For example, remove lines of code, compute on a smaller R object,
-    use build-in data.
+    use built-in data.
 * The act of creating the reprex may show you the error.
 * If not, you are in a position to ask for help from a class-mate, mailing list
 or stack overflow.
@@ -58,8 +58,8 @@ that throw the error ...
 
 * After an error, you can use `traceback()` to see the sequence
 of function calls ("call stack") that lead to the error. 
-    * The numbers in each entry are supposed to be line numbers of the
-    call in the calling function, but they usually just confuse me ...
+    * The numbers appended to each entry are the line numbers of the
+    function call in the (parent) calling function, but they usually just confuse me ...
 
 \small
 
@@ -71,10 +71,9 @@ g <- function(x) {
 h <- function(x) {
   if(!is.numeric(x)) stop("x must be numeric")
 }
-# f("cat") # uncomment to run
-# traceback()
+#f("cat") # uncomment to run
+#traceback()
 ```
-
 
 
 ## Interactive debugging
@@ -110,8 +109,8 @@ h <- function(x) {
 h <- function(x) {
   if(!is.numeric(x)) stop("x must be numeric")
 }
-# debug(f)
-# f("cat")
+#debug(f)
+#f("cat")
 # undebug(f)
 # debug(g)
 # f("cat")
@@ -290,8 +289,7 @@ plot(lb,type="violin")
 
 ## Interpretation
 
-* Notice the units in the output table, microseconds for `sqrt` and
-nanoseconds for `x^{0.5}`
+* Time units in the output table can be in microseconds, nanoseconds, ...
 * Run-time summary statistics include min, mean, median, max, and itr/sec.
 * `mem_alloc` and `gc/sec` related to memory usage
 * There are other columns in the output not shown -- see `?mark` for
