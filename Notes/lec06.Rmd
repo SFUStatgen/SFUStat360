@@ -71,8 +71,8 @@ g <- function(x) {
 h <- function(x) {
   if(!is.numeric(x)) stop("x must be numeric")
 }
-#f("cat") # uncomment to run
-#traceback()
+f("cat") # uncomment to run
+traceback()
 ```
 
 
@@ -111,7 +111,7 @@ h <- function(x) {
 }
 #debug(f)
 #f("cat")
-# undebug(f)
+#undebug(f)
 # debug(g)
 # f("cat")
 # undebug(g)
@@ -225,7 +225,7 @@ sample.interval=20000
 
 ```{r}
 source("lec6profiling.R") # profiler will refer to this source file
-# profvis({ f() }) # Or choose Profile from RStudio
+profvis({ f() }) # Or choose Profile from RStudio
 ```
 
 
@@ -239,9 +239,9 @@ we built a dataset of $500 \times 1000$ observations.
 \small
 
 ```{r}
-# profvis({ bigd1() })
-# profvis({ bigd2() })
-# profvis({ bigd3() })
+profvis({ bigd1() })
+profvis({ bigd2() })
+profvis({ bigd3() })
 ```
 
 ## Notes on memory profiling
