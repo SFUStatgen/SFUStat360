@@ -1,0 +1,48 @@
+---
+title: "Lab 6"
+author: "Pulindu Ratnasekera"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+In the recursive partitioning algorithm we had
+the following constructor for S3 objects of class `region`
+(see the week 7 exercises):
+
+```{r}
+new_region <- function(coords=NULL,x,y){
+  if(is.null(coords)) { coords <- sapply(x,range) }
+  structure(list(coords=coords,x=x,y=y),class="region")
+}
+```
+
+For this lab we will define constructor, validator and 
+helper functions following the conventions in the text. 
+To start, we simplify the constructor to take only
+the "base object" as input:
+
+```{r}
+new_region <- function(R){
+  structure(R,class="region")
+}
+```
+
+
+1. Write a validator that takes a list `R` with
+elements `coords`, `x` and `y` as input and verifies that 
+    (i)  `coords` is a matrix,
+    (ii) `coords` has two rows and as many columns as there are columns of `x`, 
+    (iii) `x` is a data frame, and 
+    (iv) `y` is of type double. Use the naming convention discussed in 
+    class for the validator.
+
+2. Write a helper function that takes arguments `coords`, `x` and 
+`y` (like the constructor from the week 7 exercises) and 
+    (i) includes the code for handling the case where the `coords` argument is `NULL`  from the original constructor, 
+    (ii) coerces `y` to a `double`,  
+    (iii) calls the validator, and 
+    (iv) calls the constructor to return a `region` object.
