@@ -136,7 +136,7 @@ from the forward algorithm
     * data in a data frame
     * list of parameters (see `glm.control`)
 * Output data strctures
-    * object of class `MARS`
+    * object of class `mars`
 * Functions
     * `mars.control()` to set up input parameters, with default settings
     * `mars()`, the main MARS function that fits the model

@@ -29,7 +29,8 @@ of elements
 `Mmax`, `d` and `trace`. `Mmax` is for the forward, `d` is for
 the backward and `trace` is to print details of 
 the fitting process.
-    * Write a constructor, validator and helper
+    * For later (when we discuss OOP):
+    Write a constructor, validator and helper
     function for this class. The helper should have
     defaults. If the user does not specify a 
     `mars.control` object on input, the helper

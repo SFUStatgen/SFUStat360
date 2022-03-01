@@ -360,7 +360,7 @@ s3_get_method("print.factor")
 ## Writing methods when there is a generic
 
 * Just write a function with name generic.class
-    * See our `print.region()` method from lab 2.
+    * See our `print.region()` method from lab 3.
 * The method should have the same arguments
 as the generic.
     * In the case of `print()` there is just one required argument, the object to be printed.
