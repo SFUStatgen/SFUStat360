@@ -78,7 +78,8 @@ variables and split points, keep track of `lof_best` and
 the best `m`, `v` and `t`. When you finish the three loops, 
 construct left- and right-split data frames from `Bfuncs[[m]]`
 and add this **pair** to the `Bfuncs` list.
-    * The indices of pair `i` in `Bfuncs` are `2*i-1` and `2*i`.
+    * The indices of pair `i` in `B` are `2*i` and `2*i+1`.
+    and in `Bfuncs` are `2*i-1` and `2*i`.
 
 ## Restriction on splitting
 
