@@ -63,9 +63,10 @@ value of `x`.
 
 ## Adding pairs of basis functions
 
-* Can initialize `B` and `Bfuncs` as in `recpart_fwd()`.
-    * Note: `B` has `Mmax+1` columns, including the intercept `B0`, 
-    and `Bfuncs` has `Mmax` elements
+* Can initialize `B` as in `recpart_fwd()`, but we'll initialize 
+`Bfuncs` to be of length `Mmax+1` to match `B`.
+    * `Bfuncs <- vector(mode="list",length=Mmax+1) `
+    * Recall: `B` has `Mmax+1` columns, including the intercept `B0`.
 * Replace the for loop over basis functions M from 1 to `Mmax`
 with a loop over **pairs** 1 to `Mmax/2`.
 * When adding pair `i`, there are currently `M=2*i-1` basis functions
@@ -77,9 +78,8 @@ to consider splitting.
 variables and split points, keep track of `lof_best` and
 the best `m`, `v` and `t`. When you finish the three loops, 
 construct left- and right-split data frames from `Bfuncs[[m]]`
-and add this **pair** to the `Bfuncs` list.
-    * The indices of pair `i` in `B` are `2*i` and `2*i+1`.
-    and in `Bfuncs` are `2*i-1` and `2*i`.
+and add this **pair** to the `B` matrix and the `Bfuncs` list.
+    * The indices of pair `i` in `B` and `Bfuncs` are `2*i` and `2*i+1`.
 
 ## Restriction on splitting
 
