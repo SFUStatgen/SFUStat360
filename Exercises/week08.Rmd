@@ -1,0 +1,37 @@
+---
+title: "Week 8 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. (text, ex. 14.2.1) Create a `BankAccount` R6 class that stores a balance
+and allows you to withdraw and deposit money. Write an initializer 
+that initializes the balance, with default balance zero. 
+Test your implementation by (i) creating 
+an instance of your class, and (ii) chaining a 
+deposit of 100, a withdrawl of 50 and then a report of the balance.
+
+
+2. Create a subclass of `BankAccount` that throws an error
+if you overdraft; i.e., if you attempt to withdraw more than the balance.
+
+3. Create a subclass of `BankAccount` that allows overdraft, but
+charges a $10 fee.
+
+4. Implement the bank account as an S4 class called `BankAccount4`.
+    (i) Include a prototype that sets the balance to `NA_real_` (a missing
+    value of type double).
+    (ii) Write a helper that creates objects of class `BanKAccount4` and 
+    allows the user to set the initial balance, with default zero.
+    Have the helper function coerce the balance to a double before
+    creating the object.
+    (iii) Write a `show`()` method that prints the object nicely.
+    (iv) Define generics and write deposit and withdrawl methods; 
+    because these methods modify the balance they should 
+    include calls to `validObject()`.
+    (v) Use `methods()` to find all methods for objects of class 
+    `BankAccount4`.
