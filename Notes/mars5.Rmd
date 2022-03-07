@@ -77,7 +77,7 @@ to consider splitting.
 * As in `recpart_fwd()` when you loop over basis functions, 
 variables and split points, keep track of `lof_best` and
 the best `m`, `v` and `t`. When you finish the three loops, 
-construct left- and right-split data frames from `Bfuncs[[m]]`
+construct left- and right-split matrices from `Bfuncs[[m]]`
 and add this **pair** to the `B` matrix and the `Bfuncs` list.
     * The indices of pair `i` in `B` and `Bfuncs` are `2*i` and `2*i+1`.
 

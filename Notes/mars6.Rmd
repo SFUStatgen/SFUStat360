@@ -30,8 +30,8 @@ prediction equation that is linear in basis functions $B_1(x),\ldots,B_{M_{max}}
     * Basis functions are products of hinge functions:
 * `fwd_stepwise()` function should return a list with elements
     1. the matrix `B`$=[B_0,B_1(x),\ldots,B_{M_{max}}(x)]$ 
-    2. the list `Bfuncs`, whose $m+1$st element is a data frame of variables,
-    signs and knots that describes the $m$th basis function 
+    2. the list `Bfuncs`, whose $m+1$st element is a matrix of signs, variables,
+    knots that describes the $m$th basis function 
     3. the response variable `y`
 * Note 1  **Change** from last week:  initialize `Bfuncs` to be 
 of length `Mmax+1` and have its indices match those of `B`;    
