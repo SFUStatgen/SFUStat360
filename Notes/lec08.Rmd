@@ -53,6 +53,8 @@ argument and the public argument.
 
 ## Example from the text
 
+* Assign the output of R6Class() to a variable with the same name as the class name
+
 \small
 
 ```{r}
@@ -148,6 +150,7 @@ Person <- R6Class("Person", list(
     stopifnot(is.numeric(age), length(age) == 1)
     self$name <- name
     self$age <- age
+    #invisible(self) is not necessary
   }))
 brad <- Person$new("Brad", age = 55)
 brad
