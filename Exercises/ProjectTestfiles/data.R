@@ -4,7 +4,7 @@
 #' and a response variable that depends on only the first two 
 #' explanatory variables.
 #'
-#' @format A data frame with 53940 rows and 10 variables:
+#' @format A data frame with 100 rows and 11 variables:
 #' \describe{
 #'   \item{y}{response variable}
 #'   \item{x1,...,x10}{explanatory variables}
