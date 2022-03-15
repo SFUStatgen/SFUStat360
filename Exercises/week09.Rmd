@@ -35,8 +35,9 @@ created in question 3. The dataset is of
 size N=100 with n=10 explanatory variables, and a response 
 variable that depends on only the first two explanatory variables.
 Source the script to create the `marstestdata` dataset for your
-package. Then use `usethis::use_data(marstestdata,overwrite=TRUE)`
-to save it.
+package. Note: Leave
+`usethis::use_data(marstestdata,overwrite=TRUE)` as the last
+line of the script -- this saves the dataset in the `data` folder.
 
 ```{r}
 # Set a seed for reproducibility
