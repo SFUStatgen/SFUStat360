@@ -38,6 +38,8 @@ Source the script to create the `marstestdata` dataset for your
 package.
 
 ```{r}
+# Set a seed for reproducibility
+set.seed(123)
 # Parameters
 N <- 100; n <- 10
 knot1 <- -0.5; knot2 <- 0; knot3 <- 0.5
