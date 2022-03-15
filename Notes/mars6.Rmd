@@ -65,31 +65,52 @@ data frame and control list as input.
     * Determine the number of non-constant basis functions from
     the number of non-intercept coefficients in the output of `lm()`
     * Calculate $\tilde{C}$ from Friedman's equation (32)
+    
+## Backwards stepwise algorithm overview
 
-## Backwards stepwise algorithm suggestions
+* Search for the model with lowest LOF. Start with the 
+full model including all terms from the forward algorithm.
+* Outer loop is over model size, `M`, inner loop is over model 
+terms to remove from the best model of size `M`. 
+* Record best model of size `M-1` and best model seen so far.
+
+## Backwards stepwise algorithm notation
 
 * Use the notation from Algorithm 3 in your R code, but
 with `Mmax` defined as the number of basis functions other than
 the intercept.
     * Recall: Friedman's `Mmax` is the number *including* the intercept.
-* Initialize `Jstar` to the indices of all non-intercept basis functions 
-from the forward algorithm: `Jstar <- 2:(Mmax+1)`
-* Initialize `Kstar <- Jstar`
-    * As the algorithm loops over the number of basis functions (see below),
-    `Kstar` contains the indices of the best set of basis functions from
-    the previous iteration.
-* Initialize best LOF so far, `lofstar`, to be the LOF for the model fit with all basis
-functions from the forward algorithm
+* Outer loop is over the size, `M`, of the previous model, 
+`Kstar` is index set of best model of current size and `b` is best 
+LOF for models of current size.
+* As we loop over `M`, `Jstar` is the best model and `lofstar` is best 
+LOF so far.
+* When the algorithm terminates, the indices of the best model are in 
+`Jstar`.
+
+## Backwards stepwise algorithm initialization
+ 
+* Before the outer loop, initialize `Jstar` to the indices of all non-intercept basis functions 
+from the forward algorithm, `Jstar <- 2:(Mmax+1)`, and `lofstar` to 
+be the LOF for the model fit with all basis functions output
+by the forward algorithm. Also 
+initialize `Kstar <- Jstar`.
+
+* At the start of **each iteration** of the outer loop, 
+make a working copy of `Kstar` called `L` and reset `b` to 
+infinity.
 
   
-## Backwards stepwise algorithm suggestions, cont.
+## Backwards stepwise algorithm: more detail
 
 * Outer loop over model size M in Mmax+1 to 2:
     * Make a working copy of `Kstar`: `L <- Kstar` and initialize the 
-    best LOF for the inner loop to `b <- Inf`. Goal of inner loop is to minimize LOF.
-    * Inner loop over m in L considers removing mth basis function from 
-    the working copy `L`, `K <- setdiff(L,m)`, fit model with basis functions in K
-    and calculate LOF.
+    best LOF for the inner loop to `b <- Inf`.
+    Goal of inner loop is to minimize LOF over models of size M-1.
+    * Inner loop over model terms `m` in index set `L`: 
+        * Try removing mth basis function from 
+        `L`, `K <- setdiff(L,m)`
+        * Fit model with basis functions in `K` and calculate LOF.
         * If LOF best seen so far in this iteration of the **inner** loop, update `Kstar`
         * If LOF is also best seen in all iterations so far of the **outer** loop, update `Jstar`
 * Algorithm terminates with indices `Jstar`.
@@ -98,7 +119,7 @@ functions from the forward algorithm
     
 ## Back in main mars function
 
-* Use lm to fit the model with the `B` returned by backward stepwise.
+* Use `lm` to fit the model with the `B` returned by backward stepwise.
     * `B` already includes an intercept, so use the formula `y~.-1`.
     * This fit is a list of class "lm". Combine it with other
     objects from mars.
