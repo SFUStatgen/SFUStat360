@@ -91,9 +91,10 @@ and then suggests calling `use_test()` to generate a test file.
 
 ## Example test file
 
-* Test files should be saved in the `tests/testthat` folder and should:
+* Test files are saved in the `tests/testthat` folder and should:
     1. Load the package
-    2. Load the .RData files in  that contain the expected output of
+    2. Load the .RData files that contain the inputs and
+    expected output of
     the function(s) you are testing,
     3. Call `testthat::test_that()` to do the test.
         * `test_that()` takes a description of the test and 
@@ -113,7 +114,8 @@ library(mars)
 load("testsomething.RData") # contains an R object with the "right answer"
 test_that("myfunc works properly",{
     # could have multiple lines/tests here in the expression between {}
-    expect_equal(myfunc(myinput),testoutput)})
+    expect_equal(myfunc(myinput),testoutput)
+    })
 ```
 
 ## Package datasets
@@ -138,9 +140,9 @@ to save your dataset.
 
 ## Documenting datasets
 
-* Datasets in data/ are exported and so much be documented.
+* Datasets in data/ are exported and so must be documented.
 * Use Roxygen2 comments in a dummy .R script in your `R/` folder.
 * See the `Exercises/ProjectTestfiles/data.R` script in the 
 class repository for an example.
-    * You will need to copy this example to your R package.
+    * You will need to copy this example to your package's R folder.
 
