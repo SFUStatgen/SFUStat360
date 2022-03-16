@@ -1,0 +1,145 @@
+---
+title: "Week 8 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. (text, ex. 14.2.1) Create a `BankAccount` R6 class that stores a balance
+and allows you to withdraw and deposit money. Write an initializer 
+that initializes the balance, with default balance zero. 
+Test your implementation by (i) creating 
+an instance of your class, and (ii) chaining a 
+deposit of 100, a withdrawl of 50 and then a report of the balance.
+
+*Solution*
+
+```{r}
+library(R6)
+BankAccount <- R6Class("BankAccount", list(
+  balance = NULL,
+  initialize = function(balance=0){
+    self$balance <- balance
+    invisible(self)
+  },
+  deposit = function(x) {
+    self$balance <- self$balance + x 
+    invisible(self)
+  },
+  withdrawl = function(x) {
+    self$balance <- self$balance - x 
+    invisible(self)
+  })
+)
+x <- BankAccount$new(balance=100)
+x$deposit(100)$withdrawl(50)$balance
+```
+
+2. Create a subclass of `BankAccount` that throws an error
+if you overdraft; i.e., if you attempt to withdraw more than the balance.
+
+*Solution*
+
+```{r}
+BankAccountNoOverdraft <- R6Class("BankAccountNoOverdraft",
+  inherit = BankAccount,
+  public = list(
+    withdrawl = function(x) {
+      if(self$balance < x) stop("Error: No overdraft allowed")
+      self$balance <- self$balance - x
+      invisible(self)
+    }
+  ))
+y <- BankAccountNoOverdraft$new(balance=100)
+try({ y$withdrawl(200) })
+```
+
+
+3. Create a subclass of `BankAccount` that allows overdraft, but
+charges a $10 fee.
+
+*Solution*
+
+```{r}
+BankAccountOverdraftFee <- R6Class("BankAccountNoOverdraft",
+  inherit = BankAccount,
+  public = list(
+    overdraftFee = 10,
+    withdrawl = function(x,overdraftFee=10) {
+      if(self$balance < x) {
+        self$balance <- self$balance - x - overdraftFee
+      } else {
+        self$balance <- self$balance - x
+      }
+      invisible(self)
+    }
+  ))
+y <- BankAccountOverdraftFee$new(balance=100)
+y$withdrawl(200)$balance
+```
+
+
+4. Implement the bank account as an S4 class called `BankAccount4`.
+    (i) Include a prototype that sets the balance to `NA_real_` (a missing
+    value of type double).
+    (ii) Write a helper that creates objects of class `BanKAccount4` and 
+    allows the user to set the initial balance, with default zero.
+    Have the helper function coerce the balance to a double before
+    creating the object.
+    (iii) Write a `show`()` method that prints the object nicely.
+    (iv) Define generics and write deposit and withdrawl methods; 
+    because these methods modify the balance they should 
+    include calls to `validObject()`.
+    (v) Use `methods()` to find all methods for objects of class 
+    `BankAccount4`.
+
+*Solution*
+
+```{r}
+# (i)
+setClass("BankAccount4", 
+  slots = c(
+    balance = "numeric"
+  ), 
+  prototype = list(
+    balance = NA_real_
+  )
+)
+# (ii)
+BankAccount4 <- function(balance=0){
+  balance <- as.double(balance)
+  new("BankAccount4",balance=balance)
+}
+ba <- BankAccount4(balance=100)
+
+# (iii)
+setMethod("show", "BankAccount4", function(object) {
+  cat(is(object)[[1]], "\n",
+      "  Balance: ", object@balance, "\n",
+      sep = ""
+  )
+})
+ba
+
+# (iv)
+setGeneric("deposit", function(x,value) standardGeneric("deposit"))
+setMethod("deposit","BankAccount4",function(x,value) {
+  x@balance <- x@balance + value
+  validObject(x)
+  x
+})
+setGeneric("withdrawl", function(x,value) standardGeneric("withdrawl"))
+setMethod("withdrawl","BankAccount4",function(x,value) {
+  x@balance <- x@balance - value
+  validObject(x)
+  x
+})
+ba <- deposit(ba,100); ba
+ba <- withdrawl(ba,50); ba
+
+# (v)
+methods(class="BankAccount4")
+```
