@@ -565,7 +565,7 @@ lines(xx,exp(-xx),col="red")
 \scriptsize
 
 ```{r,fig.height=5}
-sourceCpp("lec10_MCMC1.cpp") 
+sourceCpp("lec10_MCMC.cpp") 
 z2 <- easyMCMC_C(N,startval,proposalsd)
 hist(z2,nclass=50,freq=FALSE,xlim=c(0,6.5))
 lines(xx,exp(-xx),col="red")
