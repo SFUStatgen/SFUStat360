@@ -71,5 +71,12 @@ Notes:
     
 
 3. Implement R's `median.default()` function using the 
-`partial_sort()` algorithm from the C++ Standard Library
-(put `#include <algorithm>` at the top of your .cpp file).
+`partial_sort()` algorithm from the C++ Standard Library.
+Hints: 
+    * Put `#include <algorithm>` at the top of your .cpp file
+    and use `std::partial_sort()` to call.
+    * See the example function call at
+    https://www.cplusplus.com/reference/algorithm/partial_sort/
+    * Treat the case where the length of the input vector is
+    of odd length of even length separately.
+ 
