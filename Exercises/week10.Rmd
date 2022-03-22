@@ -1,0 +1,75 @@
+---
+title: "Week 10 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Which base R function does each of the following C++ functions 
+correspond to?
+
+```
+double f1(NumericVector x) {
+  int n = x.size();
+  double y = 0;
+
+  for(int i = 0; i < n; ++i) {
+    y += x[i] / n;
+  }
+  return y;
+}
+
+NumericVector f2(NumericVector x) {
+  int n = x.size();
+  NumericVector out(n);
+
+  out[0] = x[0];
+  for(int i = 1; i < n; ++i) {
+    out[i] = out[i - 1] + x[i];
+  }
+  return out;
+}
+
+bool f3(LogicalVector x) {
+  int n = x.size();
+
+  for(int i = 0; i < n; ++i) {
+    if (x[i]) return true;
+  }
+  return false;
+}
+
+NumericVector f4(NumericVector x, NumericVector y) {
+  int n = std::max(x.size(), y.size());
+  NumericVector x1 = rep_len(x, n);
+  NumericVector y1 = rep_len(y, n);
+
+  NumericVector out(n);
+
+  for (int i = 0; i < n; ++i) {
+    out[i] = std::min(x1[i], y1[i]);
+  }
+
+  return out;
+}
+```
+
+
+
+2. Implement the base R functions `all()`, `range()` and the function
+`over10 <- function(x) { sum(x>10) }` in C++. Implement two
+versions, one with standard for loops (e.g., `for(int i=0; i< n; i++)`))
+and vector indexing with `[]`, and one with iterators.
+Notes:
+    * Your implementations of `all()`
+    should take a `LogicalVector` as input. All others can
+    take `NumericVector`s as input.
+    * Have your implementations of `over10` return an integer.
+    
+
+3. Implement R's `median.default()` function using the 
+`partial_sort()` algorithm from the C++ Standard Library
+(put `#include <algorithm>` at the top of your .cpp file).
