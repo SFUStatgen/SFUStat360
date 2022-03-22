@@ -78,5 +78,5 @@ Hints:
     * See the example function call at
     https://www.cplusplus.com/reference/algorithm/partial_sort/
     * Treat the case where the length of the input vector is
-    of odd length of even length separately.
+    of odd length and the case of even length separately.
  
