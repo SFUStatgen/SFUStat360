@@ -201,9 +201,11 @@ bench::mark(sumR(x),sumC(x),sum(x)) # recall benchmarking pkg bench
 
 ## Notes
 
-* The input (R vector) in this example is of type `NumericVector`,
+* The input in this example is of type `NumericVector`,
 which is a C++ class defined by Rcpp.
-    * Other R vector types are `IntegerVector`, `CharacterVector`, 
+    * Rcpp takes care of converting the R function input to `NumericVector`
+    and the C++ function output to an R object
+    * Other vector types are `IntegerVector`, `CharacterVector`, 
     and `LogicalVector`. 
 * The `.size()` method of a vector returns the length as an integer.
 * Notice the syntax of `for()`: `for(initial condn; check condn; increment)`. 
@@ -218,7 +220,8 @@ which is a C++ class defined by Rcpp.
 
 ## Vector input, vector output
 
-* Note: In the following, `NumericVector out(n)` is a constructor.
+* Note: In the following, `NumericVector out (n)` constructs a
+`NumericVector` object of length `n`.
 
 \scriptsize
 
@@ -226,7 +229,7 @@ which is a C++ class defined by Rcpp.
 pdistR <- function(x, ys) { sqrt((x - ys) ^ 2) }
 cppFunction('NumericVector pdistC(double x, NumericVector ys) {
   int n = ys.size();
-  NumericVector out(n);
+  NumericVector out (n);
 
   for(int i = 0; i < n; ++i) {
     out[i] = sqrt(pow(ys[i] - x, 2.0)); //  pow() vs ^{}
@@ -368,7 +371,7 @@ out
 ## Attributes with Rcpp
 
 * From Rcpp, get and set R object attributes
-with the `.names()` and .attr()` methods for R vector types.
+with the `.names()` and .attr()` methods for  vector types.
    
 \scriptsize
 
