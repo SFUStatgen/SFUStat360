@@ -1,0 +1,58 @@
+---
+title: "Week 11 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Install the R package `nyclfights13`, and use the following 
+commands to save a subset of the `flights` dataframe as a .csv file.
+
+```{r}
+library(nycflights13)
+library(tidyverse)
+set.seed(123)
+flights <- sample_n(flights,size=5000) %>% select(dep_delay,carrier,dep_time)
+write.csv(flights,file="flights.csv")
+```
+
+
+Write a Python script that reads in the data, drops observations
+with missing values and fits a regression
+of `dep_delay` on `carrier` and `dep_time`. Save 
+the residuals and fitted values from the regression.
+In R, plot the residuals *vs* fitted values.
+Compare this to a plot of residuals *vs* fitted values when
+you fit the model in R.
+
+Notes:
+
+* The variable `carrier`
+is a categorical variable that will need to be converted to 
+dummy variables before you fit the model.
+* Depending on your approach, reticulate may 
+return the fitted values and residuals as matrices.
+
+Some suggested sources of information are:
+
+* The reticulate website at https://rstudio.github.io/reticulate/.
+The script in the first code chunk reads data in from a
+file called flights.csv,
+extracts a subset of rows, a subset of variables and
+then drops observations with missing values.
+* The pandas documentation for the `get_dummies()` function
+https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html
+* The `lec11_2.py` Python script, which uses the `linear_model()`
+function from `sklearn` to fit a regression.
+
+Don't forget to load the conda environment (or similar) that you
+installed pandas and sklearn into; e.g.,
+
+```{r}
+library(reticulate)
+use_condaenv("r-reticulate")
+```
+
