@@ -1,0 +1,188 @@
+---
+title: "Week 10 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Which base R function does each of the following C++ functions 
+correspond to?
+
+```
+double f1(NumericVector x) {
+  int n = x.size();
+  double y = 0;
+
+  for(int i = 0; i < n; ++i) {
+    y += x[i] / n;
+  }
+  return y;
+}
+
+NumericVector f2(NumericVector x) {
+  int n = x.size();
+  NumericVector out(n);
+
+  out[0] = x[0];
+  for(int i = 1; i < n; ++i) {
+    out[i] = out[i - 1] + x[i];
+  }
+  return out;
+}
+
+bool f3(LogicalVector x) {
+  int n = x.size();
+
+  for(int i = 0; i < n; ++i) {
+    if (x[i]) return true;
+  }
+  return false;
+}
+
+NumericVector f4(NumericVector x, NumericVector y) {
+  int n = std::max(x.size(), y.size());
+  NumericVector x1 = rep_len(x, n);
+  NumericVector y1 = rep_len(y, n);
+
+  NumericVector out(n);
+
+  for (int i = 0; i < n; ++i) {
+    out[i] = std::min(x1[i], y1[i]);
+  }
+
+  return out;
+}
+```
+
+*Solution*
+`f1()` is `mean()`, `f2()` is `cumsum()`, `f3()` is `any()` and `f4()` is
+`pmin()`.
+
+
+2. Implement the base R functions `all()`, `range()` and the function
+`over10 <- function(x) { sum(x>10) }` in C++. Implement two
+versions, one with standard for loops (e.g., `for(int i=0; i< n; i++)`))
+and vector indexing with `[]`, and one with iterators.
+Notes:
+    * Your implementations of `all()`
+    should take a `LogicalVector` as input. All others can
+    take `NumericVector`s as input.
+    * Have your implementations of `over10` return an integer.
+    
+
+*Solution*
+
+```
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+bool all_C_ind(LogicalVector x) {
+  int n = x.size();
+  for(int i = 0; i < n; ++i) {
+    if (!x[i]) return false;
+  }
+  return true;
+}
+// [[Rcpp::export]]
+bool all_C_it(LogicalVector x) {
+  LogicalVector::iterator it;
+  for(it = x.begin(); it != x.end(); ++it) {
+    if(!(*it)) return false;
+  }
+  return true;
+}
+// [[Rcpp::export]]
+NumericVector range_C_ind(NumericVector x) {
+  int n = x.size();
+  
+  NumericVector out(2);
+  out[0] = x[0];
+  out[1] = x[0];
+  
+  for (int i = 1; i < n; ++i) {
+    if(x[i] < out[0]) out[0] = x[i];
+    if(x[i] > out[1]) out[1] = x[i];
+  }
+  
+  return out;
+}
+// [[Rcpp::export]]
+NumericVector range_C_it(NumericVector x) {
+  NumericVector out(2);
+  out[0] = x[0];
+  out[1] = x[0];
+  NumericVector::iterator it;
+  for(it = x.begin(); it != x.end(); ++it) {
+    if((*it) < out[0]) out[0] = (*it);
+    if((*it) > out[1]) out[1] = (*it);
+  }
+  return out;
+}
+// [[Rcpp::export]]
+int over10_C_ind(NumericVector x) {
+  int n = x.size();
+  
+  int out=0;
+  
+  for (int i = 1; i < n; ++i) {
+    if(x[i] > 10) out++;
+  }
+  
+  return out;
+}
+// [[Rcpp::export]]
+int over10_C_it(NumericVector x) {
+  int out=0;
+  NumericVector::iterator it;
+  for(it = x.begin(); it != x.end(); ++it) {
+    if((*it) > 10) out++;
+  }
+  
+  return out;
+}
+
+/*** R
+x <- 1:20
+all_C_ind(x>10)
+all_C_ind(x>0)
+all_C_it(x>10)
+all_C_it(x>0)
+range_C_ind(x)
+range_C_it(x)
+over10_C_ind(x)
+over10_C_it(x)
+*/
+```
+
+3. Implement R's `median.default()` function using the 
+`partial_sort()` algorithm from the C++ Standard Library.
+Hints: 
+    * Put `#include <algorithm>` at the top of your .cpp file
+    and use `std::partial_sort()` to call.
+    * See the example function call at
+    https://www.cplusplus.com/reference/algorithm/partial_sort/
+    * Treat the case where the length of the input vector is
+    of odd length of even length separately.
+    
+
+```
+#include <algorithm>
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+double medianC(NumericVector x) {
+  int n = x.size();
+  if (n % 2 == 0) {
+    std::partial_sort (x.begin(), x.begin() + n / 2 + 1, x.end());
+    return (x[n / 2 - 1] + x[n / 2]) / 2;
+  } else {
+    std::partial_sort (x.begin(), x.begin() + (n + 1) / 2, x.end());
+    return x[(n + 1) / 2 - 1];
+  }
+}
+```

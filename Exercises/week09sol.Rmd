@@ -1,0 +1,112 @@
+---
+title: "Week 9 exercises"
+author: "Brad McNeney"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**IMPORTANT** The following exercises should be done from 
+the `mars` RStudio project that you created in lab 5. (If you haven't started the R package yet, please
+do so as soon as possible.) The root folder of this project should be
+called `mars`. After last week's lab 7 your `mars` project should have working versions of the helper, validator
+and constructor for `mars.control` objects, and a working version of 
+`fwd_stepwise()`.
+
+1. Use `usethis::use_vignette("mars")` to create a  skeleton vignette
+for your package.
+
+2. Use `usethis::use_testthat()` to create a skeleton test suite 
+for your package. 
+
+3. Use `usethis::use_data_raw("marstestdata")` to create a `data-raw` folder
+and skeleton R script for creating the `marstestdata` dataset. 
+
+4. Copy-and-paste the following into the `marstestdata.R` script 
+created in question 3. The dataset is of 
+size N=100 with n=10 explanatory variables, and a response 
+variable that depends on only the first two explanatory variables.
+Source the script to create the `marstestdata` dataset for your
+package.
+
+```{r}
+set.seed(123)
+# Parameters
+N <- 100; n <- 10
+knot1 <- -0.5; knot2 <- 0; knot3 <- 0.5
+beta1 <- 3; beta2 <- 5
+error.SD <- 0.1
+# Simulate x's
+x <- matrix(rnorm(N*n),ncol=n)
+# Simulate response variable
+h <- function(x,s,t) { 
+  return(pmax(0,s*(x-t)))
+}
+lin.pred <- beta1*h(x[,1],+1,knot1) + beta2*h(x[,2],-1,knot2)*h(x[,1],+1,knot3)
+y <- lin.pred + rnorm(n,sd=error.SD)
+# Package response and explanatory variables as a data frame
+marstestdata <- data.frame(cbind(y,x))
+names(marstestdata) <- c("y",paste0("x",1:n))
+```
+
+5. To document the `marstestdata` dataset, copy the file
+`Exercises/ProjectTestfiles/data.R` from the class GitHub repository
+to your `mars/R` folder. Look at the `data.R` file and make
+sure you understand  contents.
+
+6. Copy the files `testmc.RData` and `testfwd_stepwise.RData` 
+from the `Exercises/ProjectTestfiles` folder on the class
+GitHub repository to your `mars/tests/testthat`
+folder. Create test scripts `testmars_control.R`, and
+`testfwd_stepwise.R` in your `mars/tests/testthat` folder. 
+    * `testmars_control.R` should load `testmc.RData`, 
+    call your `mars.control()` function with input `Mmax=10`, 
+    and compare the output to the output `testmc` in `testmc.RData`
+    * `testfwd_stepwise.R` should load `testfwd_stepwise.RData`,
+    call your `fwd_stepwise()` function with the inputs 
+    `testy`, `testx`, and `testmc` from `testfwd_selection.RData`,
+    and compare the output to `testfwd` from `testfwd_selection.RData`.
+
+*Solution*
+
+I first have to make the test .RData files using my mars code.
+
+```{r}
+source("../mars.R")
+testmc <- mars.control(Mmax=10)
+save(testmc,file="ProjectTestfiles/testmc.RData")
+mf <- model.frame(formula(y~.),marstestdata)
+testy <- model.response(mf)
+mt <- attr(mf, "terms")
+testx <- model.matrix(mt, mf)[,-1,drop=FALSE]
+testfwd <- fwd_stepwise(testy,testx,testmc)
+save(testy,testx,testmc,testfwd,file="ProjectTestfiles/testfwd_stepwise.RData")
+```
+
+The test scripts are as follows
+
+```
+# testmars_control.R
+library(mars)
+load("testmc.RData")
+test_that("mars.control() returns the correct object", {
+  expect_equal(mars.control(Mmax=10), testmc)
+})
+```
+
+```
+# testfwd_stepwise.R
+library(mars)
+load("testfwd_stepwise.RData")
+test_that("fwd_stepwise() returns the correct object", {
+  expect_equal(fwd_stepwise(testy,testx,testmc), testfwd)
+})
+```
+
+7. Use `devtools::test()` to run the tests. Both tests should pass.
+
+8. (Optional, but recommended) 
+Commit the files that were created or modified in these exercises to your
+project folder on GitHub.
